@@ -10,23 +10,23 @@ import PyQt5.QtGui
 
 
 # класс главного окна
-# class WindowMain(PyQt5.QtWidgets.QMainWindow):
-#     """Класс главного окна"""
-#
-#     # описание главного окна
-#     def __init__(self):
-#         super().__init__()
-#
-#         # переменные
-#         self.info_extention_open_file_xlsx = 'Файлы XLSX (*.xlsx)'
-#         self.info_path_open_file = None
-#         self.text_empty_path_file = 'файл пока не выбран'
-#         self.info_for_open_file = 'Выберите XLSX файл (.XLSX)'
-#
-#         # главное окно, надпись на нём и размеры
-#         self.setWindowTitle('Парсер XLSX файлов для отчёта Журнал записей пациентов')
-#         self.setGeometry(450, 100, 700, 350)
-#         self.setWindowFlags(PyQt5.QtCore.Qt.WindowStaysOnTopHint)
+class WindowMain(PyQt5.QtWidgets.QMainWindow):
+    """Класс главного окна"""
+
+    # описание главного окна
+    def __init__(self):
+        super().__init__()
+
+        # переменные
+        self.info_extention_open_file_xlsx = 'Файлы ZIP (*.zip), CSV (*.csv)'
+        self.info_path_open_file = None
+        self.text_empty_path_file = 'файл пока не выбран'
+        self.info_for_open_file = 'Выберите файл ZIP или CSV (.ZIP, .CSV)'
+
+        # главное окно, надпись на нём и размеры
+        self.setWindowTitle('Программа для помощи в просмотре отчёта о мед балансе (товары на складах)')
+        self.setGeometry(450, 100, 700, 350)
+        self.setWindowFlags(PyQt5.QtCore.Qt.WindowStaysOnTopHint)
 #
 #         # ОБЪЕКТЫ НА ФОРМЕ
 #         # выбор свежего файла
