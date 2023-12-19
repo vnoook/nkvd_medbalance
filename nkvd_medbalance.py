@@ -24,32 +24,32 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.info_for_open_file = 'Выберите файл ZIP или CSV (.ZIP, .CSV)'
 
         # главное окно, надпись на нём и размеры
-        self.setWindowTitle('Программа для помощи в просмотре отчёта о мед балансе (товары на складах)')
+        self.setWindowTitle('Программа просмотра и создания отчёта о мед балансе (товары на складах)')
         self.setGeometry(450, 100, 700, 350)
         self.setWindowFlags(PyQt5.QtCore.Qt.WindowStaysOnTopHint)
-#
-#         # ОБЪЕКТЫ НА ФОРМЕ
-#         # выбор свежего файла
-#         # label_select_file_fresh_data
-#         self.label_select_file_fresh_data = PyQt5.QtWidgets.QLabel(self)
-#         self.label_select_file_fresh_data.setObjectName('label_select_file_fresh_data')
-#         self.label_select_file_fresh_data.setText('1) Выберите свежий файл XLSX')
-#         self.label_select_file_fresh_data.setGeometry(PyQt5.QtCore.QRect(10, 10, 150, 40))
-#         font = PyQt5.QtGui.QFont()
-#         font.setPointSize(12)
-#         self.label_select_file_fresh_data.setFont(font)
-#         self.label_select_file_fresh_data.adjustSize()
-#         self.label_select_file_fresh_data.setToolTip(self.label_select_file_fresh_data.objectName())
-#
-#         # toolButton_select_fresh_xlsx
-#         self.toolButton_select_fresh_xlsx = PyQt5.QtWidgets.QPushButton(self)
-#         self.toolButton_select_fresh_xlsx.setObjectName('toolButton_select_fresh_xlsx')
-#         self.toolButton_select_fresh_xlsx.setText('...')
-#         self.toolButton_select_fresh_xlsx.setGeometry(PyQt5.QtCore.QRect(10, 40, 50, 20))
-#         self.toolButton_select_fresh_xlsx.setFixedWidth(50)
-#         self.toolButton_select_fresh_xlsx.clicked.connect(self.select_file_fresh_xlsx)
-#         self.toolButton_select_fresh_xlsx.setToolTip(self.toolButton_select_fresh_xlsx.objectName())
-#
+
+        # ОБЪЕКТЫ НА ФОРМЕ
+        # выбор файла
+        # label_select_file
+        self.label_select_file = PyQt5.QtWidgets.QLabel(self)
+        self.label_select_file.setObjectName('label_select_file')
+        self.label_select_file.setText('Выберите ZIP файл или распакованый CSV')
+        self.label_select_file.setGeometry(PyQt5.QtCore.QRect(10, 10, 150, 40))
+        font = PyQt5.QtGui.QFont()
+        font.setPointSize(12)
+        self.label_select_file.setFont(font)
+        self.label_select_file.adjustSize()
+        self.label_select_file.setToolTip(self.label_select_file.objectName())
+
+        # toolButton_select_file
+        self.toolButton_select_file = PyQt5.QtWidgets.QPushButton(self)
+        self.toolButton_select_file.setObjectName('toolButton_select_file')
+        self.toolButton_select_file.setText('...')
+        self.toolButton_select_file.setGeometry(PyQt5.QtCore.QRect(10, 40, 50, 20))
+        self.toolButton_select_file.setFixedWidth(50)
+        # self.toolButton_select_file.clicked.connect(self.select_file_fresh_xlsx)
+        self.toolButton_select_file.setToolTip(self.toolButton_select_file.objectName())
+
 #         # label_path_fresh_file
 #         self.label_path_fresh_file = PyQt5.QtWidgets.QLabel(self)
 #         self.label_path_fresh_file.setObjectName('label_path_fresh_file')
