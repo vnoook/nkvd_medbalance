@@ -30,7 +30,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.setWindowFlags(PyQt5.QtCore.Qt.WindowStaysOnTopHint)
 
         # переменные
-        self.info_extention_open_file = 'Файлы ZIP или CSV (*.zip; *.csv)'
+        self.info_extention_open_file = 'Файлы (*.zip; *.csv)'
         self.info_path_open_file = None
         self.text_empty_path_file = 'файл пока не выбран'
         self.info_for_open_file = 'Выберите файл (.ZIP) или (.CSV)'
@@ -39,7 +39,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # label_prompt_select_file
         self.label_prompt_select_file = PyQt5.QtWidgets.QLabel(self)
         self.label_prompt_select_file.setObjectName('label_prompt_select_file')
-        self.label_prompt_select_file.setText('Выберите файл ZIP')
+        self.label_prompt_select_file.setText('Выберите файл ZIP или CSV')
         self.label_prompt_select_file.setGeometry(PyQt5.QtCore.QRect(10, 10, 150, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(12)
@@ -71,7 +71,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # button_report_to_xls
         self.button_report_to_xls = PyQt5.QtWidgets.QPushButton(self)
         self.button_report_to_xls.setObjectName('button_report_to_xls')
-        # self.button_report_to_xls.setEnabled(False)
+        self.button_report_to_xls.setEnabled(False)
         self.button_report_to_xls.setText('Создать отчёт "Остатки на складе"')
         self.button_report_to_xls.setGeometry(PyQt5.QtCore.QRect(10, 230, 260, 25))
         self.button_report_to_xls.clicked.connect(self.parse_xlsx)
@@ -103,7 +103,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # выбор только пути файла из data_of_open_file_name
         file_name = data_of_open_file_name[0]
 
-        # нажата кнопка выбора XLSX файла
+        # нажата кнопка выбора файла
         if file_name == '':
             self.label_path_selected_file.setText(old_path_of_selected_file)
             self.label_path_selected_file.adjustSize()
@@ -112,18 +112,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             self.label_path_selected_file.setText(file_name)
             self.label_path_selected_file.adjustSize()
 
-            # активация и деактивация объектов на форме зависящее от выбора файла
-            if ((self.text_empty_path_file not in self.label_path_selected_file.text()) and
-                    (self.text_empty_path_file not in self.label_path_old_file.text())):
-                self.button_report_to_xls.setEnabled(True)
-
-    # событие - нажатие на кнопку выбора файла
-    def select_file_old_xlsx(self):
-        pass
-
-    # активация и деактивация объектов на форме зависящее от выбора файла
-    def units_activate(self):
-        pass
+        # активация и деактивация объектов на форме зависящее от выбора файла
+        if self.text_empty_path_file not in self.label_path_selected_file.text():
+            self.button_report_to_xls.setEnabled(True)
 
     # функция создания отчёта
     def parse_xlsx(self):
