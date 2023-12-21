@@ -1,21 +1,3 @@
-# TODO
-# взять файл
-# определить его расширение
-# zip распаковать, csv сразу пустить в работу
-# взять инфу в список из нужных колонок
-# сделать новые списке относительно алгоритма подсчёта остатков
-
-import os
-import sys
-# import openpyxl
-# import openpyxl.utils
-# import openpyxl.styles
-import PyQt5
-import PyQt5.QtWidgets
-import PyQt5.QtCore
-import PyQt5.QtGui
-
-
 # класс главного окна
 class WindowMain(PyQt5.QtWidgets.QMainWindow):
     """Класс главного окна"""
