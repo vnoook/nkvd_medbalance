@@ -14,6 +14,13 @@ import PyQt5
 import PyQt5.QtWidgets
 import PyQt5.QtCore
 import PyQt5.QtGui
+# новые импорты для чтения архива, работы в файлами, временем и csv
+import datetime
+import shutil
+import psutil
+import csv
+import msc
+import rarfile
 
 
 # класс главного окна
@@ -67,6 +74,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.label_path_selected_file.setFont(font)
         self.label_path_selected_file.adjustSize()
         self.label_path_selected_file.setToolTip(self.label_path_selected_file.objectName())
+
+        # тут место табличному виджету
+        #
 
         # button_report_to_xls
         self.button_report_to_xls = PyQt5.QtWidgets.QPushButton(self)
