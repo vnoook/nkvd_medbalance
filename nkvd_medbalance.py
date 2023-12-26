@@ -15,12 +15,11 @@ import PyQt5.QtWidgets
 import PyQt5.QtCore
 import PyQt5.QtGui
 # новые импорты для чтения архива, работы в файлами, временем и csv
-import datetime
-import shutil
-import psutil
-import csv
-import msc
-import rarfile
+# import datetime
+# import shutil
+# import psutil
+# import csv
+# import rarfile
 
 
 # класс главного окна
@@ -39,8 +38,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # переменные
         self.info_extention_open_file = 'Файлы (*.zip; *.csv)'
         self.info_path_open_file = None
-        self.text_empty_path_file = 'файл пока не выбран'
         self.info_for_open_file = 'Выберите файл (.ZIP) или (.CSV)'
+        self.text_empty_path_file = 'файл пока не выбран'
 
         # ОБЪЕКТЫ НА ФОРМЕ
         # label_prompt_select_file
@@ -112,6 +111,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         # выбор только пути файла из data_of_open_file_name
         file_name = data_of_open_file_name[0]
+
+        print(file_name)
 
         # нажата кнопка выбора файла
         if file_name == '':
