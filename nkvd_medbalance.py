@@ -133,6 +133,15 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         if self.text_empty_path_file not in self.label_path_selected_file.text():
             self.button_report_to_xls.setEnabled(True)
 
+            self.parse_selected_file()
+
+    # функция создания отчёта
+    def parse_selected_file(self):
+        file_full_path = self.selected_file
+        file_full_name = os.path.basename(self.selected_file)
+        file_name = os.path.basename(self.selected_file).rsplit('.', 1)[0]
+        file_ext = os.path.basename(self.selected_file).rsplit('.', 1)[1]
+
     # функция создания отчёта
     def report_to_xls(self):
         pass
