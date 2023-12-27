@@ -40,6 +40,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.info_path_open_file = None
         self.info_for_open_file = 'Выберите файл (.ZIP) или (.CSV)'
         self.text_empty_path_file = 'файл пока не выбран'
+        self.selected_file = None
 
         # ОБЪЕКТЫ НА ФОРМЕ
         # label_prompt_select_file
@@ -104,24 +105,37 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         old_path_of_selected_file = self.label_path_selected_file.text()
 
         # непосредственное окно выбора файла и переменная для хранения пути файла
+        print(f'{self.selected_file = }')
+        print(f'{old_path_of_selected_file = }')
+        print()
         data_of_open_file_name = PyQt5.QtWidgets.QFileDialog.getOpenFileName(self,
                                                                              self.info_for_open_file,
                                                                              self.info_path_open_file,
                                                                              self.info_extention_open_file)
+        # выбираю только путь из data_of_open_file_name
+        selected_file_full_path = data_of_open_file_name[0]
 
-        # выбор только пути файла из data_of_open_file_name
-        file_name = data_of_open_file_name[0]
-
-        print(file_name)
-
-        # нажата кнопка выбора файла
-        if file_name == '':
+        # нажата или не нажата кнопка выбора файла
+        if selected_file_full_path == '':
+            # если не выбран файл
+            old_path_of_selected_file = self.label_path_selected_file.text()
+            if self.label_path_selected_file.text() == self.text_empty_path_file:
+                self.selected_file = None
+            else:
+                self.selected_file = old_path_of_selected_file
             self.label_path_selected_file.setText(old_path_of_selected_file)
             self.label_path_selected_file.adjustSize()
         else:
+            # если выбран файл
             old_path_of_selected_file = self.label_path_selected_file.text()
-            self.label_path_selected_file.setText(file_name)
+            self.selected_file = os.path.normcase(selected_file_full_path)
+            self.label_path_selected_file.setText(selected_file_full_path)
             self.label_path_selected_file.adjustSize()
+
+        # print(f'{selected_file_full_path = }')
+        print(f'{self.selected_file = }')
+        print(f'{old_path_of_selected_file = }')
+        print('*'*50)
 
         # активация и деактивация объектов на форме зависящее от выбора файла
         if self.text_empty_path_file not in self.label_path_selected_file.text():
