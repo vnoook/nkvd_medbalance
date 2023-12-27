@@ -159,18 +159,20 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # print()
 
         # работа с zip файлом
-        if zipfile.is_zipfile(file_kit[0]):
+        if not zipfile.is_zipfile(file_kit[0]):
+            print('это не zip файл')
+        else:
             # файл экземпляр ZipFile
             zf = zipfile.ZipFile(file_kit[0])
 
             # непосредственный поиск файла csv в архиве
             flag_csv_ext = False
             for file_in_zf in zf.namelist():
-                print(file_in_rf)
-                # if file_in_zf.is_file():
-                #     if str(os.path.basename(file_in_zf.filename)).lower() == '.csv':
-                #         flag_csv_ext = True
-                #         break
+                if str(os.path.basename(file_in_zf).rsplit('.', 1)[1]).lower() == 'csv':
+                    print(3)
+                    print(file_in_zf)
+                    flag_csv_ext = True
+                    break
 
 
 
