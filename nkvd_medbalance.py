@@ -142,6 +142,24 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         file_name = os.path.basename(self.selected_file).rsplit('.', 1)[0]
         file_ext = os.path.basename(self.selected_file).rsplit('.', 1)[1]
 
+        file_kit = (file_full_path, file_full_name, file_name, file_ext)
+
+        if file_ext == 'zip':
+            self.take_zip(file_kit)
+        elif file_ext == 'csv':
+            self.take_csv(file_kit)
+        else:
+            # не могу определить расширение файла
+            pass
+
+    # функция создания отчёта
+    def take_zip(self, file_kit):
+        print(self.take_zip.__name__)
+
+    # функция создания отчёта
+    def take_csv(self):
+        print(self.take_csv.__name__)
+
     # функция создания отчёта
     def report_to_xls(self):
         pass
