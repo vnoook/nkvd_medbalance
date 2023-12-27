@@ -160,20 +160,32 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         # работа с zip файлом
         if not zipfile.is_zipfile(file_kit[0]):
-            print('это не zip файл')
+            # информационное окно про полное заполнение колонки
+            PyQt5.QtWidgets.QMessageBox.information(self,'Ошибка', f'Файл\n{file_kit[0]}\n не является архивом zip')
         else:
             # файл экземпляр ZipFile
             zf = zipfile.ZipFile(file_kit[0])
+            # print(zf.filename)
+            # print(zf.filelist)
+            # print(zf.namelist())
+            # print(zf.infolist())
 
-            # непосредственный поиск файла csv в архиве
+            # поиск файла csv в архиве
             flag_csv_ext = False
-            for file_in_zf in zf.namelist():
-                if str(os.path.basename(file_in_zf).rsplit('.', 1)[1]).lower() == 'csv':
-                    print(3)
-                    print(file_in_zf)
-                    flag_csv_ext = True
-                    break
+            for file_in_zf in zf.infolist():
+                # print(file_in_zf)
+                # print(file_in_zf.filename)
+                # print(file_in_zf.is_dir())
+                if not file_in_zf.is_dir():
+                    print('это файл')
+                    if str(os.path.basename(file_in_zf).rsplit('.', 1)[1]).lower() == 'csv':
+                        print(3)
+                        print(file_in_zf)
+                        print(zf.getinfo(file_in_zf))
+                        flag_csv_ext = True
+                        break
 
+            zf.close()
 
 
 
