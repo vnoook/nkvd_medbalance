@@ -7,9 +7,9 @@
 
 import os
 import sys
-import openpyxl
-import openpyxl.utils
-import openpyxl.styles
+# import openpyxl
+# import openpyxl.utils
+# import openpyxl.styles
 import PyQt5
 import PyQt5.QtWidgets
 import PyQt5.QtCore
@@ -19,7 +19,7 @@ import PyQt5.QtGui
 # import shutil
 # import psutil
 # import csv
-# import rarfile
+import zipfile
 
 
 # класс главного окна
@@ -154,10 +154,31 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
     # функция создания отчёта
     def take_zip(self, file_kit):
-        print(self.take_zip.__name__)
+        # print(self.take_zip.__name__)
+        # print(file_kit)
+        # print()
+
+        # работа с zip файлом
+        if zipfile.is_zipfile(file_kit[0]):
+            # файл экземпляр ZipFile
+            zf = zipfile.ZipFile(file_kit[0])
+
+            # непосредственный поиск файла csv в архиве
+            flag_csv_ext = False
+            for file_in_zf in zf.namelist():
+                print(file_in_rf)
+                # if file_in_zf.is_file():
+                #     if str(os.path.basename(file_in_zf.filename)).lower() == '.csv':
+                #         flag_csv_ext = True
+                #         break
+
+
+
+
+
 
     # функция создания отчёта
-    def take_csv(self):
+    def take_csv(self, file_kit):
         print(self.take_csv.__name__)
 
     # функция создания отчёта
