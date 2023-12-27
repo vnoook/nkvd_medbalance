@@ -18,7 +18,7 @@ import PyQt5.QtGui
 # import datetime
 # import shutil
 # import psutil
-# import csv
+import csv
 import zipfile
 import difflib
 
@@ -190,13 +190,13 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                         else:
                             flag_csv_ext = True
 
-                        # if file_kit[0] in file_in_zf.filename.rsplit('.', 1)[1]:
-                        #     pass
-                        # break
-                        # with myzip.open('eggs.txt') as myfile:
-                        #     print(myfile.read())
+                            # reader_object = csv.reader(file_in_zf.filename, delimiter=",")
+                            # for row in file_reader:
+                            #     print(row)
 
-                        #
+                            with zf.open(file_in_zf.filename) as file_csv:
+                                print(file_csv.read())
+
             zf.close()
 
 
