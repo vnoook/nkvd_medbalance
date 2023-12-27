@@ -84,7 +84,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.button_report_to_xls.setEnabled(False)
         self.button_report_to_xls.setText('Создать отчёт "Остатки на складе"')
         self.button_report_to_xls.setGeometry(PyQt5.QtCore.QRect(10, 230, 260, 25))
-        self.button_report_to_xls.clicked.connect(self.parse_xlsx)
+        self.button_report_to_xls.clicked.connect(self.report_to_xls)
         self.button_report_to_xls.setToolTip(self.button_report_to_xls.objectName())
 
         # button_exit
@@ -105,9 +105,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         old_path_of_selected_file = self.label_path_selected_file.text()
 
         # непосредственное окно выбора файла и переменная для хранения пути файла
-        print(f'{self.selected_file = }')
-        print(f'{old_path_of_selected_file = }')
-        print()
         data_of_open_file_name = PyQt5.QtWidgets.QFileDialog.getOpenFileName(self,
                                                                              self.info_for_open_file,
                                                                              self.info_path_open_file,
@@ -132,17 +129,12 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             self.label_path_selected_file.setText(selected_file_full_path)
             self.label_path_selected_file.adjustSize()
 
-        # print(f'{selected_file_full_path = }')
-        print(f'{self.selected_file = }')
-        print(f'{old_path_of_selected_file = }')
-        print('*'*50)
-
         # активация и деактивация объектов на форме зависящее от выбора файла
         if self.text_empty_path_file not in self.label_path_selected_file.text():
             self.button_report_to_xls.setEnabled(True)
 
     # функция создания отчёта
-    def parse_xlsx(self):
+    def report_to_xls(self):
         pass
 
     # событие - нажатие на кнопку Выход
