@@ -4,7 +4,7 @@
 # zip распаковать и взять из него csv, а csv сразу пустить в работу
 # взять инфу в список из нужных колонок
 # сделать новые списке относительно алгоритма подсчёта остатков
-
+import difflib
 import os
 import sys
 # import openpyxl
@@ -20,6 +20,7 @@ import PyQt5.QtGui
 # import psutil
 # import csv
 import zipfile
+import difflib
 
 
 # класс главного окна
@@ -177,14 +178,25 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 # print(file_in_zf.filename)
                 # print(file_in_zf.is_dir())
                 if not file_in_zf.is_dir():
-                    print('это файл')
-                    if str(os.path.basename(file_in_zf).rsplit('.', 1)[1]).lower() == 'csv':
-                        print(3)
-                        print(file_in_zf)
-                        print(zf.getinfo(file_in_zf))
-                        flag_csv_ext = True
-                        break
+                    # print(file_in_zf.filename)
+                    if file_in_zf.filename.rsplit('.', 1)[1].lower() == 'csv':
+                        diff_ratio_file_names = difflib.SequenceMatcher(None, file_kit[2],
+                                                                        file_in_zf.filename.rsplit('.', 1)[0]).ratio()
+                        if diff_ratio_file_names < 0.9:
+                            PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка',
+                                f'Имя файла zip не совпадает с именам внутри архива.\n'
+                                f'Выберите непереименованный файл скачанный с сайта\n'
+                                f'или выберите другой.')
+                        else:
+                            flag_csv_ext = True
 
+                        # if file_kit[0] in file_in_zf.filename.rsplit('.', 1)[1]:
+                        #     pass
+                        # break
+                        # with myzip.open('eggs.txt') as myfile:
+                        #     print(myfile.read())
+
+                        #
             zf.close()
 
 
