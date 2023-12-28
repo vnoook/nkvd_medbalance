@@ -4,6 +4,10 @@
 # zip распаковать и взять из него csv, а csv сразу пустить в работу
 # взять инфу в список из нужных колонок
 # сделать новые списке относительно алгоритма подсчёта остатков
+# "sgtin", "status", "withdrawal_type", "batch", "expiration_date", "gtin", "prod_name", "last_tracing_op_date"
+# Остаток поштучно-каждая строка -1 шт
+# Общее количество через фильтр по наименованию, потом по серии  и количеству  sgtin (или колич. строчек)
+
 import difflib
 import os
 import sys
@@ -43,6 +47,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.info_for_open_file = 'Выберите файл (.ZIP) или (.CSV)'
         self.text_empty_path_file = 'файл пока не выбран'
         self.selected_file = None
+        self.headers = ("sgtin", "status", "withdrawal_type", "batch", "expiration_date",
+                        "gtin", "prod_name", "last_tracing_op_date")
 
         # ОБЪЕКТЫ НА ФОРМЕ
         # label_prompt_select_file
@@ -137,7 +143,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
             self.parse_selected_file()
 
-    # функция создания отчёта
+    # функция выбора файла
     def parse_selected_file(self):
         file_full_path = self.selected_file
         file_full_name = os.path.basename(self.selected_file)
@@ -154,7 +160,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             # не могу определить расширение файла
             pass
 
-    # функция создания отчёта
+    # функция чтения zip файла
     def take_zip(self, file_kit):
         # print(self.take_zip.__name__)
         # print(file_kit)
@@ -230,20 +236,15 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             #     print(row)
             zf.close()
 
-    # функция создания отчёта
+    # функция чтения csv файла
     def take_csv(self, file_kit):
-        # print(self.take_csv.__name__)
-        # print(file_kit)
+        code_page = self.get_local(file_kit[0])
 
-        print(self.get_local(file_kit[0]))
-        print(os.path.isfile(file_kit[0]))
-
-        with open(file_kit[0]) as fp:
-            reader = csv.reader(fp)
-            for row in reader:
-                print(row)
-
-
+        with open(file_kit[0], encoding=code_page, newline='') as fp:
+            print()
+            reader = csv.reader(fp, delimiter=',')
+            for key, row in enumerate(reader, start=1):
+                print(key, row)
 
 
 
