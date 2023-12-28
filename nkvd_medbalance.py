@@ -195,12 +195,13 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 text = file_csv.read()
                             # print(text)
                             # print(text.decode('utf-8'))
+                            # print(text.decode('cp1251'))
 
                             reader_object = csv.reader(text.decode('utf-8'),
-                                                       delimiter=',',
-                                                       doublequote=True,
-                                                       quotechar='"',
-                                                       lineterminator='\n'
+                                                       delimiter=",",
+                                                       # doublequote=False,
+                                                       # quotechar='',
+                                                       # lineterminator='\n'
                                                        # skipinitialspace=True,
                                                        # strict=False
                                                        )
