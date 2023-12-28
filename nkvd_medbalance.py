@@ -143,7 +143,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
             self.parse_selected_file()
 
-    # функция выбора файла
+    # функция разбора файла и выбора что с ним делать
     def parse_selected_file(self):
         file_full_path = self.selected_file
         file_full_name = os.path.basename(self.selected_file)
@@ -181,11 +181,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             # поиск файла csv в архиве
             flag_csv_ext = False
             for file_in_zf in zf.infolist():
-                # print(file_in_zf)
-                # print(file_in_zf.filename)
-                # print(file_in_zf.is_dir())
                 if not file_in_zf.is_dir():
-                    # print(file_in_zf.filename)
                     if file_in_zf.filename.rsplit('.', 1)[1].lower() == 'csv':
                         diff_ratio_file_names = difflib.SequenceMatcher(None, file_kit[2],
                                                                         file_in_zf.filename.rsplit('.', 1)[0]).ratio()
@@ -219,21 +215,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 print(cell, end='')
                             print()
 
-                            # for csv_str in text:
-                            #     pass
-                            #     print(csv_str)
-                            #     print(csv_str.decode('utf-8'))
-                            #     print('------------------')
-                            #     reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=',', doublequote=True)
-                            #     for cell in reader_object:
-                            #         print(cell, end=' ... ')
-                            #     print()
-
-                            # # reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=",",
-                            #                              quotechar='"', doublequote=True)
-                            # reader_object = csv.reader(text)
-                            # for row in reader_object:
-                            #     print(row)
             zf.close()
 
     # функция чтения csv файла
@@ -287,3 +268,19 @@ def main_app():
 # запуск основного окна
 if __name__ == '__main__':
     main_app()
+
+# for csv_str in text:
+#     pass
+#     print(csv_str)
+#     print(csv_str.decode('utf-8'))
+#     print('------------------')
+#     reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=',', doublequote=True)
+#     for cell in reader_object:
+#         print(cell, end=' ... ')
+#     print()
+
+# # reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=",",
+#                              quotechar='"', doublequote=True)
+# reader_object = csv.reader(text)
+# for row in reader_object:
+#     print(row)
