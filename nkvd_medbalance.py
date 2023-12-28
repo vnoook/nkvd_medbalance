@@ -22,7 +22,7 @@ import csv
 import zipfile
 import difflib
 import locale
-
+import chardet
 
 # класс главного окна
 class WindowMain(PyQt5.QtWidgets.QMainWindow):
@@ -223,22 +223,33 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             #         print(cell, end=' ... ')
                             #     print()
 
-
-                            # # reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=",", quotechar='"', doublequote=True)
+                            # # reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=",",
+                            #                              quotechar='"', doublequote=True)
                             # reader_object = csv.reader(text)
                             # for row in reader_object:
                             #     print(row)
-
-
             zf.close()
-
-
-
-
 
     # функция создания отчёта
     def take_csv(self, file_kit):
-        print(self.take_csv.__name__)
+        # print(self.take_csv.__name__)
+        # print(file_kit)
+
+        print(self.get_local(file_kit[0]))
+        print(os.path.isfile(file_kit[0]))
+
+        with open(file_kit[0]) as fp:
+            reader = csv.reader(fp)
+            for row in reader:
+                print(row)
+
+
+
+
+
+
+
+
 
     # функция создания отчёта
     def report_to_xls(self):
@@ -248,6 +259,19 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
     @staticmethod
     def click_on_btn_exit():
         sys.exit()
+
+    # получение кодировки файла
+    @staticmethod
+    def get_local(one_file):
+        detector = chardet.universaldetector.UniversalDetector()
+        with open(one_file, 'rb') as fh:
+            for line in fh:
+                detector.feed(line)
+                if detector.done:
+                    break
+            detector.close()
+        # print(detector.result)
+        return detector.result['encoding']
 
 
 # создание основного окна
