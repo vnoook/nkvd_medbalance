@@ -190,12 +190,24 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                         else:
                             flag_csv_ext = True
 
-                            # reader_object = csv.reader(file_in_zf.filename, delimiter=",")
-                            # for row in file_reader:
+                            with zf.open(file_in_zf.filename) as file_csv:
+                                # text = file_csv.read().decode('utf-8')
+                                text = file_csv.readlines()
+                                # print(text)
+
+                            for csv_str in text:
+                                print(csv_str.decode('utf-8'))
+                                # reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=',', doublequote=True)
+                                # for cell in reader_object:
+                                #     print(cell, end=' ... ')
+                                # print()
+
+
+                            # # reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=",", quotechar='"', doublequote=True)
+                            # reader_object = csv.reader(text)
+                            # for row in reader_object:
                             #     print(row)
 
-                            with zf.open(file_in_zf.filename) as file_csv:
-                                print(file_csv.read())
 
             zf.close()
 
