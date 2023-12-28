@@ -21,6 +21,7 @@ import PyQt5.QtGui
 import csv
 import zipfile
 import difflib
+import locale
 
 
 # класс главного окна
@@ -197,8 +198,11 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             # print(text.decode('utf-8'))
                             # print(text.decode('cp1251'))
 
-                            reader_object = csv.reader(text.decode('utf-8'),
-                                                       delimiter=",",
+                            print(locale.getpreferredencoding())
+                            sys_lcl = locale.getpreferredencoding()
+
+                            reader_object = csv.reader(text.decode(sys_lcl),
+                                                       delimiter=";",
                                                        # doublequote=False,
                                                        # quotechar='',
                                                        # lineterminator='\n'
