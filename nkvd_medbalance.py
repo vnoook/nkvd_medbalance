@@ -191,16 +191,32 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             flag_csv_ext = True
 
                             with zf.open(file_in_zf.filename) as file_csv:
-                                # text = file_csv.read().decode('utf-8')
-                                text = file_csv.readlines()
-                                # print(text)
+                                # text = file_csv.readlines()
+                                text = file_csv.read()
+                            # print(text)
+                            # print(text.decode('utf-8'))
 
-                            for csv_str in text:
-                                print(csv_str.decode('utf-8'))
-                                # reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=',', doublequote=True)
-                                # for cell in reader_object:
-                                #     print(cell, end=' ... ')
-                                # print()
+                            reader_object = csv.reader(text.decode('utf-8'),
+                                                       delimiter=',',
+                                                       doublequote=True,
+                                                       quotechar='"',
+                                                       lineterminator='\n'
+                                                       # skipinitialspace=True,
+                                                       # strict=False
+                                                       )
+                            for cell in reader_object:
+                                print(cell, end='')
+                            print()
+
+                            # for csv_str in text:
+                            #     pass
+                            #     print(csv_str)
+                            #     print(csv_str.decode('utf-8'))
+                            #     print('------------------')
+                            #     reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=',', doublequote=True)
+                            #     for cell in reader_object:
+                            #         print(cell, end=' ... ')
+                            #     print()
 
 
                             # # reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=",", quotechar='"', doublequote=True)
