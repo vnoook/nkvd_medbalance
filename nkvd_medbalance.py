@@ -222,16 +222,20 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         code_page = self.get_local(file_kit[0])
 
         with open(file_kit[0], encoding=code_page, newline='') as fp:
-            print()
+            # print()
             reader = csv.reader(fp, delimiter=',')
             for key, row in enumerate(reader, start=1):
-                print(key, row)
-
-
-
-
-
-
+                # проверка на наличие в файле всех требующихся полей, поиск ведётся в первой строке
+                if key == 1:
+                    if not all(val in row for val in self.headers):
+                        # информационное окно об отсутствии минимально необходимых полей в файле
+                        PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка',
+                                                                f'Файл {file_kit[1]}\nне содержит всех нужных полей.\n'
+                                                                f'Переформируйте файл с нужными или со всеми полями.')
+                        break
+            # TODO
+            # тут нужно добавить обработку csv
+            print('тут добавить обработку csv')
 
     # функция создания отчёта
     def report_to_xls(self):
