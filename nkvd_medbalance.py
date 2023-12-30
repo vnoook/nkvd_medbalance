@@ -3,8 +3,8 @@
 # определить его расширение
 # zip распаковать и взять из него csv, а csv сразу пустить в работу
 # взять инфу в список из нужных колонок
-# сделать новые списке относительно алгоритма подсчёта остатков
-# "sgtin", "status", "withdrawal_type", "batch", "expiration_date", "gtin", "prod_name", "last_tracing_op_date"
+# сделать новые списки относительно алгоритма подсчёта остатков
+#
 # Остаток поштучно-каждая строка -1 шт
 # Общее количество через фильтр по наименованию, потом по серии  и количеству  sgtin (или колич. строчек)
 
@@ -169,7 +169,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # работа с zip файлом
         if not zipfile.is_zipfile(file_kit[0]):
             # информационное окно про полное заполнение колонки
-            PyQt5.QtWidgets.QMessageBox.information(self,'Ошибка', f'Файл\n{file_kit[0]}\n не является архивом zip')
+            PyQt5.QtWidgets.QMessageBox.information(self,
+                                                    'Ошибка',
+                                                    f'Файл\n\n"{file_kit[0]}"\n\n не является архивом zip')
         else:
             # файл экземпляр ZipFile
             zf = zipfile.ZipFile(file_kit[0])
@@ -187,8 +189,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                                                         file_in_zf.filename.rsplit('.', 1)[0]).ratio()
                         if diff_ratio_file_names < 0.9:
                             PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка',
-                                f'Имя файла zip не совпадает с именам внутри архива.\n'
-                                f'Выберите непереименованный файл скачанный с сайта\n'
+                                f'Имя файла zip не совпадает с именам внутри архива.\n\n'
+                                f'Выберите непереименованный файл скачанный с сайта\n\n'
                                 f'или выберите другой.')
                         else:
                             flag_csv_ext = True
@@ -234,9 +236,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             f'Файл "{file_kit[1]}"\n\nне содержит всех нужных полей.\n\n'
                             f'Переформируйте файл с нужными или со всеми полями.')
                         break
-            # TODO
-            # тут нужно добавить обработку csv
-            print('тут добавить обработку csv')
+                # TODO
+                # тут нужно добавить обработку csv
+                print('тут добавить обработку csv')
 
     # функция создания отчёта
     def report_to_xls(self):
@@ -274,18 +276,12 @@ def main_app():
 if __name__ == '__main__':
     main_app()
 
-# for csv_str in text:
-#     pass
-#     print(csv_str)
-#     print(csv_str.decode('utf-8'))
-#     print('------------------')
 #     reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=',', doublequote=True)
 #     for cell in reader_object:
 #         print(cell, end=' ... ')
 #     print()
 
-# # reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=",",
-#                              quotechar='"', doublequote=True)
+# reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=",", quotechar='"', doublequote=True)
 # reader_object = csv.reader(text)
 # for row in reader_object:
 #     print(row)
