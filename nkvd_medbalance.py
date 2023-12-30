@@ -47,8 +47,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.info_for_open_file = 'Выберите файл (.ZIP) или (.CSV)'
         self.text_empty_path_file = 'файл пока не выбран'
         self.selected_file = None
-        self.headers = ("sgtin", "status", "withdrawal_type", "batch", "expiration_date",
-                        "gtin", "prod_name", "last_tracing_op_date")
+        # self.headers = ("sgtin", "status", "withdrawal_type", "batch",
+        #                 "expiration_date", "gtin", "prod_name", "last_tracing_op_date")
+        self.headers = ("sgtin", "status", "gtin", "prod_name")
 
         # ОБЪЕКТЫ НА ФОРМЕ
         # label_prompt_select_file
@@ -137,55 +138,55 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             self.label_path_selected_file.setText(selected_file_full_path)
             self.label_path_selected_file.adjustSize()
 
-        # активация и деактивация объектов на форме зависящее от выбора файла
-        if self.text_empty_path_file not in self.label_path_selected_file.text():
-            self.button_report_to_xls.setEnabled(True)
+        # активация объектов на форме зависящих от выбора файла
+        self.activate_objects()
 
-            self.parse_selected_file()
-
-    # функция разбора файла и выбора что с ним делать
-    def parse_selected_file(self):
-        file_full_path = self.selected_file
-        file_full_name = os.path.basename(self.selected_file)
-        file_name = os.path.basename(self.selected_file).rsplit('.', 1)[0]
-        file_ext = os.path.basename(self.selected_file).rsplit('.', 1)[1]
-
-        file_kit = (file_full_path, file_full_name, file_name, file_ext)
+        file_set = self.parse_file(self.selected_file)
+        file_ext = file_set[3]
 
         if file_ext == 'zip':
-            self.take_zip(file_kit)
+            self.take_zip(file_set)
         elif file_ext == 'csv':
-            self.take_csv(file_kit)
+            self.take_csv(file_set)
         else:
             # не могу определить расширение файла
             pass
 
-    # функция чтения zip файла
-    def take_zip(self, file_kit):
-        # print(self.take_zip.__name__)
-        # print(file_kit)
-        # print()
+    # функция активации объектов на форме зависящих от выбора файла
+    def activate_objects(self):
+        # активация и деактивация объектов на форме зависящее от выбора файла
+        if self.text_empty_path_file not in self.label_path_selected_file.text():
+            self.button_report_to_xls.setEnabled(True)
 
+    # функция разбора файла на полный путь, полное имя файла, имя файла и расширение файла
+    @staticmethod
+    def parse_file(take_file):
+        file_full_path = take_file
+        file_full_name = os.path.basename(take_file)
+        file_name = os.path.basename(take_file).rsplit('.', 1)[0]
+        file_ext = os.path.basename(take_file).rsplit('.', 1)[1]
+
+        return (file_full_path, file_full_name, file_name, file_ext)
+
+    # функция чтения zip файла
+    def take_zip(self, take_file):
         # работа с zip файлом
-        if not zipfile.is_zipfile(file_kit[0]):
+        if not zipfile.is_zipfile(take_file[0]):
             # информационное окно про полное заполнение колонки
             PyQt5.QtWidgets.QMessageBox.information(self,
                                                     'Ошибка',
-                                                    f'Файл\n\n"{file_kit[0]}"\n\n не является архивом zip')
+                                                    f'Файл\n\n"{take_file[0]}"\n\n не является архивом zip')
         else:
             # файл экземпляр ZipFile
-            zf = zipfile.ZipFile(file_kit[0])
-            # print(zf.filename)
-            # print(zf.filelist)
-            # print(zf.namelist())
-            # print(zf.infolist())
+            zf = zipfile.ZipFile(take_file[0])
 
             # поиск файла csv в архиве
             flag_csv_ext = False
             for file_in_zf in zf.infolist():
                 if not file_in_zf.is_dir():
-                    if file_in_zf.filename.rsplit('.', 1)[1].lower() == 'csv':
-                        diff_ratio_file_names = difflib.SequenceMatcher(None, file_kit[2],
+                    if parse_file(file_in_zf.filename)[3].lower() == 'csv':
+                        diff_ratio_file_names = difflib.SequenceMatcher(None,
+                                                                        take_file[2],
                                                                         file_in_zf.filename.rsplit('.', 1)[0]).ratio()
                         if diff_ratio_file_names < 0.9:
                             PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка',
@@ -224,7 +225,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         code_page = self.get_local(file_kit[0])
 
         with open(file_kit[0], encoding=code_page, newline='') as fp:
-            # print()
+            gathering_list = []
             reader = csv.reader(fp, delimiter=',')
             for key, row in enumerate(reader, start=1):
                 # проверка на наличие в файле всех требующихся полей, поиск ведётся в первой строке
@@ -235,10 +236,35 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             'Ошибка',
                             f'Файл "{file_kit[1]}"\n\nне содержит всех нужных полей.\n\n'
                             f'Переформируйте файл с нужными или со всеми полями.')
+                        del gathering_list
                         break
+                    # else:
+                    #     gathering_list.append(row)
                 # TODO
                 # тут нужно добавить обработку csv
-                print('тут добавить обработку csv')
+                # print('тут добавить обработку csv')
+                gathering_list.append(row)
+
+        self.create_csv_list(gathering_list)
+        # print(*self.create_csv_list(gathering_list), sep='\n')
+        print('*'*55)
+        print()
+
+    # функция создания списка с данными по шаблону self.headers, чтобы колонки шли в порядке self.headers
+    def create_csv_list(self, input_list: list):
+        output_list = []
+        place_dict = {}
+        for header in self.headers:
+            for key, val_input_list in enumerate(input_list):
+                if key == 0:
+                    place = val_input_list.index(header)
+                    place_dict[header] = place
+                output_list.append(val_input_list[place])
+
+        print(*input_list, sep='\n')
+        print(place_dict)
+        print(output_list)
+        return output_list
 
     # функция создания отчёта
     def report_to_xls(self):
@@ -285,3 +311,10 @@ if __name__ == '__main__':
 # reader_object = csv.reader(text)
 # for row in reader_object:
 #     print(row)
+
+# import tempfile
+# fp = tempfile.TemporaryFile()
+# fp.write(b'Hello world!')
+# fp.seek(0)
+# fp.read()
+# fp.close()
