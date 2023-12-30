@@ -229,9 +229,10 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 if key == 1:
                     if not all(val in row for val in self.headers):
                         # информационное окно об отсутствии минимально необходимых полей в файле
-                        PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка',
-                                                                f'Файл {file_kit[1]}\nне содержит всех нужных полей.\n'
-                                                                f'Переформируйте файл с нужными или со всеми полями.')
+                        PyQt5.QtWidgets.QMessageBox.information(self,
+                            'Ошибка',
+                            f'Файл "{file_kit[1]}"\n\nне содержит всех нужных полей.\n\n'
+                            f'Переформируйте файл с нужными или со всеми полями.')
                         break
             # TODO
             # тут нужно добавить обработку csv
