@@ -6,9 +6,8 @@
 # сделать новые списки относительно алгоритма подсчёта остатков
 #
 # Остаток поштучно-каждая строка -1 шт
-# Общее количество через фильтр по наименованию, потом по серии  и количеству  sgtin (или колич. строчек)
+# Общее количество через фильтр по наименованию, потом по серии и количеству sgtin (или количество строчек)
 
-import difflib
 import os
 import sys
 # import openpyxl
@@ -27,6 +26,7 @@ import zipfile
 import difflib
 import locale
 import chardet
+
 
 # класс главного окна
 class WindowMain(PyQt5.QtWidgets.QMainWindow):
@@ -141,7 +141,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # активация объектов на форме зависящих от выбора файла
         self.activate_objects()
 
-        file_set = self.parse_file(self.selected_file)
+        file_set = self.parse_file_parts(self.selected_file)
         file_ext = file_set[3]
 
         if file_ext == 'zip':
@@ -158,16 +158,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         if self.text_empty_path_file not in self.label_path_selected_file.text():
             self.button_report_to_xls.setEnabled(True)
 
-    # функция разбора файла на полный путь, полное имя файла, имя файла и расширение файла
-    @staticmethod
-    def parse_file(take_file):
-        file_full_path = take_file
-        file_full_name = os.path.basename(take_file)
-        file_name = os.path.basename(take_file).rsplit('.', 1)[0]
-        file_ext = os.path.basename(take_file).rsplit('.', 1)[1]
-
-        return (file_full_path, file_full_name, file_name, file_ext)
-
     # функция чтения zip файла
     def take_zip(self, take_file):
         # работа с zip файлом
@@ -181,21 +171,19 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             zf = zipfile.ZipFile(take_file[0])
 
             # поиск файла csv в архиве
-            flag_csv_ext = False
             for file_in_zf in zf.infolist():
                 if not file_in_zf.is_dir():
-                    if parse_file(file_in_zf.filename)[3].lower() == 'csv':
+                    if self.parse_file_parts(file_in_zf.filename)[3].lower() == 'csv':
                         diff_ratio_file_names = difflib.SequenceMatcher(None,
                                                                         take_file[2],
                                                                         file_in_zf.filename.rsplit('.', 1)[0]).ratio()
                         if diff_ratio_file_names < 0.9:
-                            PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка',
+                            PyQt5.QtWidgets.QMessageBox.information(self,
+                                'Ошибка',
                                 f'Имя файла zip не совпадает с именам внутри архива.\n\n'
-                                f'Выберите непереименованный файл скачанный с сайта\n\n'
+                                f'Выберите не переименованный файл скачанный с сайта\n\n'
                                 f'или выберите другой.')
                         else:
-                            flag_csv_ext = True
-
                             with zf.open(file_in_zf.filename) as file_csv:
                                 # text = file_csv.readlines()
                                 text = file_csv.read()
@@ -287,6 +275,16 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             detector.close()
         # print(detector.result)
         return detector.result['encoding']
+
+    # функция разбора файла на полный путь, полное имя файла, имя файла и расширение файла
+    @staticmethod
+    def parse_file_parts(take_file):
+        file_full_path = take_file
+        file_full_name = os.path.basename(take_file)
+        file_name = os.path.basename(take_file).rsplit('.', 1)[0]
+        file_ext = os.path.basename(take_file).rsplit('.', 1)[1]
+
+        return file_full_path, file_full_name, file_name, file_ext
 
 
 # создание основного окна
