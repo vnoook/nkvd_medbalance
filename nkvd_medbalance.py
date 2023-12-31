@@ -10,22 +10,21 @@
 
 import os
 import sys
-# import openpyxl
-# import openpyxl.utils
-# import openpyxl.styles
 import PyQt5
 import PyQt5.QtWidgets
 import PyQt5.QtCore
 import PyQt5.QtGui
-# новые импорты для чтения архива, работы в файлами, временем и csv
-# import datetime
-# import shutil
-# import psutil
 import csv
 import zipfile
 import difflib
 import locale
 import chardet
+# import openpyxl
+# import openpyxl.utils
+# import openpyxl.styles
+# import datetime
+# import shutil
+# import psutil
 
 
 # класс главного окна
@@ -47,9 +46,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.info_for_open_file = 'Выберите файл (.ZIP) или (.CSV)'
         self.text_empty_path_file = 'файл пока не выбран'
         self.selected_file = None
-        # self.headers = ("sgtin", "status", "withdrawal_type", "batch",
-        #                 "expiration_date", "gtin", "prod_name", "last_tracing_op_date")
-        self.headers = ("sgtin", "status", "gtin", "prod_name")
+        # self.headers = ('sgtin', 'status', 'withdrawal_type', 'batch',
+        #                 'expiration_date', 'gtin', 'prod_name', 'last_tracing_op_date')
+        self.headers = ('sgtin', 'status', 'gtin', 'prod_name')
 
         # ОБЪЕКТЫ НА ФОРМЕ
         # label_prompt_select_file
@@ -84,6 +83,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.label_path_selected_file.adjustSize()
         self.label_path_selected_file.setToolTip(self.label_path_selected_file.objectName())
 
+        #
         # тут место табличному виджету
         #
 
@@ -105,7 +105,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.button_exit.clicked.connect(self.click_on_btn_exit)
         self.button_exit.setToolTip(self.button_exit.objectName())
 
-    # событие - нажатие на кнопку выбора файла
+    # нажатие на кнопку выбора файла
     def select_file(self):
         # переменная для хранения информации из окна выбора файла
         data_of_open_file_name = None
@@ -113,7 +113,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # запоминание старого значения пути выбора файлов
         old_path_of_selected_file = self.label_path_selected_file.text()
 
-        # непосредственное окно выбора файла и переменная для хранения пути файла
+        # окно выбора файла и переменная для хранения пути файла
         data_of_open_file_name = PyQt5.QtWidgets.QFileDialog.getOpenFileName(self,
                                                                              self.info_for_open_file,
                                                                              self.info_path_open_file,
@@ -141,6 +141,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # активация объектов на форме зависящих от выбора файла
         self.activate_objects()
 
+        # определение расширения файла и выбор действий
         file_set = self.parse_file_parts(self.selected_file)
         file_ext = file_set[3]
 
@@ -152,17 +153,16 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             # не могу определить расширение файла
             pass
 
-    # функция активации объектов на форме зависящих от выбора файла
+    # активация объектов на форме зависящих от выбора файла
     def activate_objects(self):
-        # активация и деактивация объектов на форме зависящее от выбора файла
+        # активация объектов на форме зависящих от выбора файла
         if self.text_empty_path_file not in self.label_path_selected_file.text():
             self.button_report_to_xls.setEnabled(True)
 
-    # функция чтения zip файла
+    # чтение zip файла
     def take_zip(self, take_file):
-        # работа с zip файлом
         if not zipfile.is_zipfile(take_file[0]):
-            # информационное окно про полное заполнение колонки
+            # информационное окно про неправильный zip файл
             PyQt5.QtWidgets.QMessageBox.information(self,
                                                     'Ошибка',
                                                     f'Файл\n\n"{take_file[0]}"\n\n не является архивом zip')
@@ -174,9 +174,11 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             for file_in_zf in zf.infolist():
                 if not file_in_zf.is_dir():
                     if self.parse_file_parts(file_in_zf.filename)[3].lower() == 'csv':
-                        diff_ratio_file_names = difflib.SequenceMatcher(None,
-                                                                        take_file[2],
-                                                                        file_in_zf.filename.rsplit('.', 1)[0]).ratio()
+                        # сравнение имён файлов между именем архива и именем csv файла, они должны почти совпадать
+                        diff_ratio_file_names = difflib.SequenceMatcher(
+                                                    None,
+                                                    take_file[2],
+                                                    self.parse_file_parts(file_in_zf.filename)[2]).ratio()
                         if diff_ratio_file_names < 0.9:
                             PyQt5.QtWidgets.QMessageBox.information(self,
                                 'Ошибка',
@@ -210,7 +212,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
     # функция чтения csv файла
     def take_csv(self, file_kit):
-        code_page = self.get_local(file_kit[0])
+        code_page = self.get_codepage(file_kit[0])
 
         with open(file_kit[0], encoding=code_page, newline='') as fp:
             gathering_list = []
@@ -258,14 +260,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
     def report_to_xls(self):
         pass
 
-    # событие - нажатие на кнопку Выход
-    @staticmethod
-    def click_on_btn_exit():
-        sys.exit()
-
     # получение кодировки файла
     @staticmethod
-    def get_local(one_file):
+    def get_codepage(one_file):
         detector = chardet.universaldetector.UniversalDetector()
         with open(one_file, 'rb') as fh:
             for line in fh:
@@ -285,6 +282,11 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         file_ext = os.path.basename(take_file).rsplit('.', 1)[1]
 
         return file_full_path, file_full_name, file_name, file_ext
+
+    # событие - нажатие на кнопку Выход
+    @staticmethod
+    def click_on_btn_exit():
+        sys.exit()
 
 
 # создание основного окна
