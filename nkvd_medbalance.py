@@ -189,18 +189,30 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             with zf.open(file_in_zf.filename) as file_csv:
                                 # text = file_csv.readlines()
                                 text = file_csv.read()
-                            # print(text)
+
+                                # преобразование полученного из файла в csv во временный файл дабы не распаковывать
+                                # import tempfile
+                                # fp = tempfile.TemporaryFile()
+                                # fp.write(text)
+                                # fp.seek(0)
+                                # fp.read()
+                                # fp.close()
+
                             # print(text.decode('utf-8'))
                             # print(text.decode('cp1251'))
 
-                            print(locale.getpreferredencoding())
+                            # TODO
+                            # тут ошибка
+
                             sys_lcl = locale.getpreferredencoding()
+                            print(locale.getpreferredencoding())
+                            # code_page = self.get_codepage(fp)
 
                             reader_object = csv.reader(text.decode(sys_lcl),
-                                                       delimiter=";",
+                                                       # delimiter=',',
                                                        # doublequote=False,
                                                        # quotechar='',
-                                                       # lineterminator='\n'
+                                                       # lineterminator='\r\n'
                                                        # skipinitialspace=True,
                                                        # strict=False
                                                        )
@@ -231,6 +243,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                     # else:
                     #     gathering_list.append(row)
                 # TODO
+                # тут ошибка
                 # тут нужно добавить обработку csv
                 # print('тут добавить обработку csv')
                 gathering_list.append(row)
@@ -311,10 +324,3 @@ if __name__ == '__main__':
 # reader_object = csv.reader(text)
 # for row in reader_object:
 #     print(row)
-
-# import tempfile
-# fp = tempfile.TemporaryFile()
-# fp.write(b'Hello world!')
-# fp.seek(0)
-# fp.read()
-# fp.close()
