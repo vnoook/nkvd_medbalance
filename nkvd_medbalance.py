@@ -249,7 +249,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 gathering_list.append(row)
 
         self.create_csv_list(gathering_list)
-        # print(*self.create_csv_list(gathering_list), sep='\n')
+        print(*self.create_csv_list(gathering_list), sep='\n')
         print('*'*55)
         print()
 
