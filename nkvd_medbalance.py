@@ -152,6 +152,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
     # активация объектов на форме зависящих от выбора файла
     def activate_objects(self):
+        # TODO
+        # это переписать
+
         # активация объектов на форме зависящих от выбора файла
         if self.text_empty_path_file not in self.label_path_selected_file.text():
             self.button_report_to_xls.setEnabled(True)
@@ -261,7 +264,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             place = input_list[0].index(header)
             place_dict[header] = place
 
-        # формирование выходного списка согласно заголовков
+        # формирование выходного списка согласно порядку заголовков
         output_list = []
         for key, list_of_input_list in enumerate(input_list):
             str_list = []
@@ -295,7 +298,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
     # функция разбора файла на полный путь, полное имя файла, имя файла и расширение файла
     @staticmethod
     def parse_file_parts(take_file):
-        # проверка не непустой путь, то есть выбранный файл
+        # проверка на непустой путь, то есть выбранный файл
         if take_file:
             file_full_path = take_file
             file_full_name = os.path.basename(take_file)
