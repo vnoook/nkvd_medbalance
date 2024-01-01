@@ -272,11 +272,10 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 str_list.append(list_of_input_list[place_dict[place]])
             output_list.append(str_list)
 
-        # print()
-        # print(*input_list, sep='\n', end='\n\n')
-        # print(place_dict, end='\n\n')
-        # print(*output_list, sep='\n')
-        return output_list
+        # TODO
+        # тут вызвать выгрузку в табличную часть или это сделать в take_csv (252 строка)
+
+        # return output_list
 
     # функция создания отчёта
     def report_to_xls(self):
