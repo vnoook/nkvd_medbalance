@@ -138,19 +138,17 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             self.label_path_selected_file.setText(selected_file_full_path)
             self.label_path_selected_file.adjustSize()
 
-        # активация объектов на форме зависящих от выбора файла
-        self.activate_objects()
-
         # определение расширения файла и выбор действий
         file_set = self.parse_file_parts(self.selected_file)
 
-        if file_set[3] == 'zip':
-            self.take_zip(file_set)
-        elif file_set[3] == 'csv':
-            self.take_csv(file_set)
-        else:
-            # не могу определить расширение файла
-            pass
+        if file_set:
+            if file_set[3] == 'zip':
+                self.take_zip(file_set)
+            elif file_set[3] == 'csv':
+                self.take_csv(file_set)
+            else:
+                # не могу определить расширение файла
+                pass
 
     # активация объектов на форме зависящих от выбора файла
     def activate_objects(self):
@@ -221,6 +219,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
             zf.close()
 
+        # активация объектов на форме зависящих от выбора файла
+        self.activate_objects()
+
     # функция чтения csv файла
     def take_csv(self, file_kit):
         # определение кодировки входных данных
@@ -229,9 +230,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         gathering_list = []
         with open(file_kit[0], encoding=code_page, newline='') as fp:
             reader = csv.reader(fp)
-            # print(reader)
             for key, row in enumerate(reader, start=1):
-                # print(f'{key = } ... {row = }')
                 # проверка на наличие в файле всех требующихся полей, поиск ведётся в первой строке
                 if key == 1:
                     if not all(val in row for val in self.headers):
@@ -241,18 +240,18 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             f'Файл "{file_kit[1]}"\n\nне содержит всех нужных полей.\n\n'
                             f'Переформируйте файл с нужными или со всеми полями.')
                         break
-                # print(key)
                 gathering_list.append(row)
 
-        # если формируется не пустой список данных из csv, то передать его в подготовку для табличной части
-        if len(gathering_list) > 1:
-            self.create_csv_list(gathering_list)
-            # print(*self.create_csv_list(gathering_list), sep='\n')
-            # print('*'*55)
-            # print()
-        else:
-            # информационное окно о пустом файле csv
-            PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка', f'Файл пуст. Переформируйте файл.')
+            # если формируется не пустой список данных из csv, то передать его в подготовку для табличной части
+            if len(gathering_list) > 1:
+                # передача данных в подготовку для табличной части
+                self.create_csv_list(gathering_list)
+
+                # активация объектов на форме зависящих от выбора файла
+                self.activate_objects()
+            else:
+                # информационное окно о пустом файле csv
+                PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка', f'Файл пуст. Переформируйте файл.')
 
     # функция создания списка с данными по шаблону self.headers, чтобы колонки шли в порядке self.headers
     def create_csv_list(self, input_list: list):
@@ -296,12 +295,16 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
     # функция разбора файла на полный путь, полное имя файла, имя файла и расширение файла
     @staticmethod
     def parse_file_parts(take_file):
-        file_full_path = take_file
-        file_full_name = os.path.basename(take_file)
-        file_name = os.path.basename(take_file).rsplit('.', 1)[0]
-        file_ext = os.path.basename(take_file).rsplit('.', 1)[1]
+        # проверка не непустой путь, то есть выбранный файл
+        if take_file:
+            file_full_path = take_file
+            file_full_name = os.path.basename(take_file)
+            file_name = os.path.basename(take_file).rsplit('.', 1)[0]
+            file_ext = os.path.basename(take_file).rsplit('.', 1)[1]
 
-        return file_full_path, file_full_name, file_name, file_ext
+            return file_full_path, file_full_name, file_name, file_ext
+        else:
+            return None
 
     # событие - нажатие на кнопку Выход
     @staticmethod
