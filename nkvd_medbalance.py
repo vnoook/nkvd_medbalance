@@ -255,18 +255,24 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
     # функция создания списка с данными по шаблону self.headers, чтобы колонки шли в порядке self.headers
     def create_csv_list(self, input_list: list):
-        output_list = []
+        # нахождение мест заголовков во входящих данных, на случай если колонки во входящих данных перепутаны
         place_dict = {}
         for header in self.headers:
-            for key, val_input_list in enumerate(input_list):
-                if key == 0:
-                    place = val_input_list.index(header)
-                    place_dict[header] = place
-                output_list.append(val_input_list[place])
+            place = input_list[0].index(header)
+            place_dict[header] = place
 
-        print(*input_list, sep='\n')
-        print(place_dict)
-        print(output_list)
+        # формирование выходного списка согласно заголовков
+        output_list = []
+        for key, list_of_input_list in enumerate(input_list):
+            str_list = []
+            for place in place_dict:
+                str_list.append(list_of_input_list[place_dict[place]])
+            output_list.append(str_list)
+
+        # print()
+        # print(*input_list, sep='\n', end='\n\n')
+        # print(place_dict, end='\n\n')
+        # print(*output_list, sep='\n')
         return output_list
 
     # функция создания отчёта
