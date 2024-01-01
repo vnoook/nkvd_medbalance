@@ -143,11 +143,10 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         # определение расширения файла и выбор действий
         file_set = self.parse_file_parts(self.selected_file)
-        file_ext = file_set[3]
 
-        if file_ext == 'zip':
+        if file_set[3] == 'zip':
             self.take_zip(file_set)
-        elif file_ext == 'csv':
+        elif file_set[3] == 'csv':
             self.take_csv(file_set)
         else:
             # не могу определить расширение файла
@@ -224,12 +223,15 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
     # функция чтения csv файла
     def take_csv(self, file_kit):
+        # определение кодировки входных данных
         code_page = self.get_codepage(file_kit[0])
 
+        gathering_list = []
         with open(file_kit[0], encoding=code_page, newline='') as fp:
-            gathering_list = []
-            reader = csv.reader(fp, delimiter=',')
+            reader = csv.reader(fp)
+            # print(reader)
             for key, row in enumerate(reader, start=1):
+                # print(f'{key = } ... {row = }')
                 # проверка на наличие в файле всех требующихся полей, поиск ведётся в первой строке
                 if key == 1:
                     if not all(val in row for val in self.headers):
@@ -238,20 +240,19 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             'Ошибка',
                             f'Файл "{file_kit[1]}"\n\nне содержит всех нужных полей.\n\n'
                             f'Переформируйте файл с нужными или со всеми полями.')
-                        del gathering_list
                         break
-                    # else:
-                    #     gathering_list.append(row)
-                # TODO
-                # тут ошибка
-                # тут нужно добавить обработку csv
-                # print('тут добавить обработку csv')
+                # print(key)
                 gathering_list.append(row)
 
-        self.create_csv_list(gathering_list)
-        print(*self.create_csv_list(gathering_list), sep='\n')
-        print('*'*55)
-        print()
+        # если формируется не пустой список данных из csv, то передать его в подготовку для табличной части
+        if len(gathering_list) > 1:
+            self.create_csv_list(gathering_list)
+            # print(*self.create_csv_list(gathering_list), sep='\n')
+            # print('*'*55)
+            # print()
+        else:
+            # информационное окно о пустом файле csv
+            PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка', f'Файл пуст. Переформируйте файл.')
 
     # функция создания списка с данными по шаблону self.headers, чтобы колонки шли в порядке self.headers
     def create_csv_list(self, input_list: list):
