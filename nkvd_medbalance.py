@@ -17,9 +17,9 @@ import PyQt5.QtGui
 import csv
 import zipfile
 import difflib
-import locale
 import chardet
 import tempfile
+# import locale
 # import openpyxl
 # import openpyxl.utils
 # import openpyxl.styles
@@ -198,7 +198,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 fp.write(text)
                                 # чтение переводится в начало файла
                                 fp.seek(0)
-                                # пока файл не закрыт получаю его именя
+                                # пока файл не закрыт получаю его имя
                                 file_set = self.parse_file_parts(fp.name)
                                 # и передаю его в обработку данных
                                 self.take_csv(file_set)
@@ -317,13 +317,3 @@ def main_app():
 # запуск основного окна
 if __name__ == '__main__':
     main_app()
-
-#     reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=',', doublequote=True)
-#     for cell in reader_object:
-#         print(cell, end=' ... ')
-#     print()
-
-# reader_object = csv.reader(csv_str.decode('utf-8'), delimiter=",", quotechar='"', doublequote=True)
-# reader_object = csv.reader(text)
-# for row in reader_object:
-#     print(row)
