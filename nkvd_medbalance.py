@@ -199,36 +199,20 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             # бинарные данные записываются во временный файл
                             with tempfile.NamedTemporaryFile(prefix='_from_zip_', suffix='.csv', delete=False) as fp:
                                 fp.write(text)
-                                fp.close()
+                                fp.seek(0)
+                                # print(fp.read())
 
                                 print(fp.name)
                                 file_set = self.parse_file_parts(fp.name)
                                 print(file_set)
                                 self.take_csv(file_set)
-                                print(self.take_csv(file_set))
 
-                            # print(3)
-                            # for cell in reader_object:
-                            #     print(31)
-                            #     print(cell, end='')
-                            # print(4)
-                            #
-                            # # code_page = self.get_codepage(fp)
-                            # # print(code_page)
-                            #
-                            # reader = csv.reader(fp)
-                            # for key, row in enumerate(reader, start=1):
-                            #     # проверка на наличие в файле всех требующихся полей, поиск ведётся в первой строке
-                            #     print(key, row)
-                            #
-                            # print(7)
+                            fp.close()
                     else:
                         # TODO
                         # если в архиве не найден csv файл
                         pass
-
             zf.close()
-            fp.close()
 
         # активация объектов на форме зависящих от выбора файла
         self.activate_objects()
@@ -282,6 +266,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         # TODO
         # тут вызвать выгрузку в табличную часть или это сделать в take_csv (252 строка)
+
+        print(output_list)
 
         # return output_list
 
