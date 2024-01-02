@@ -19,6 +19,7 @@ import zipfile
 import difflib
 import locale
 import chardet
+import tempfile
 # import openpyxl
 # import openpyxl.utils
 # import openpyxl.styles
@@ -188,23 +189,14 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 f'Выберите не переименованный файл скачанный с сайта\n\n'
                                 f'или выберите другой.')
                         else:
-                            # нужный файл найден, попытка прочитать
-                            with zf.open(file_in_zf.filename) as file_csv_in_zip:
-                                # text = file_csv_in_zip.readlines()
-                                text = file_csv_in_zip.read()
-                                # text1 = file_csv_in_zip.read()
-                                # print(text1)
-                                # print(text1.decode('utf-8'))
-                                # text = text1.decode('utf-8')
-                                # print(text)
-
                             print(1)
-                            print(text)
-
-                            # преобразование полученного из файла в csv во временный файл чтобы не распаковывать
-                            import tempfile
+                            # нужный файл найден, чтение из файла данных в бинарном виде
+                            with zf.open(file_in_zf.filename) as file_csv_in_zip:
+                                text = file_csv_in_zip.read()
+                            # print(text)
 
                             print(2)
+                            # бинарные данные записываются во временный файл
                             with tempfile.NamedTemporaryFile(delete=False) as fp:
                                 fp.write(text)
                                 fp.close()
@@ -212,12 +204,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 #     f.read()
                                 # print(fp)
                                 # print(f)
-
-                                # fp = tempfile.TemporaryFile()
-                                # fp.write(text)
-                                # fp.seek(0)
-                                # fp.read()
-                                # fp.close()
 
                             print(3)
                             # print(text.decode('utf-8'))
