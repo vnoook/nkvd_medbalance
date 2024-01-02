@@ -39,7 +39,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Помощник проверки остатков')
         self.setGeometry(150, 150, 1000, 400)
-        self.setWindowFlags(PyQt5.QtCore.Qt.WindowStaysOnTopHint)
+        # self.setWindowFlags(PyQt5.QtCore.Qt.WindowStaysOnTopHint)
 
         # переменные
         self.info_extention_open_file = 'Файлы (*.zip; *.csv)'
@@ -197,56 +197,35 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
                             print(2)
                             # бинарные данные записываются во временный файл
-                            with tempfile.NamedTemporaryFile(delete=False) as fp:
+                            with tempfile.NamedTemporaryFile(prefix='_from_zip_', suffix='.csv', delete=False) as fp:
                                 fp.write(text)
                                 fp.close()
-                                # with open(fp.name, mode='rb') as f:
-                                #     f.read()
-                                # print(fp)
-                                # print(f)
 
-                            print(3)
-                            # print(text.decode('utf-8'))
-                            # print(text.decode('cp1251'))
+                                print(fp.name)
+                                file_set = self.parse_file_parts(fp.name)
+                                print(file_set)
+                                self.take_csv(file_set)
+                                print(self.take_csv(file_set))
 
-                            # TODO
-                            # тут ошибка
-
-                            # sys_lcl = locale.getpreferredencoding()
-                            # print(locale.getpreferredencoding())
-                            # code_page = self.get_codepage(fp)
-
-                            print(4)
-                            # fp.seek(0)
-                            # fp.read()
-                            reader_object = csv.reader(#text.decode('utf-8'),
-                                                       fp,
-                                                       # delimiter=',',
-                                                       # doublequote=False,
-                                                       # quotechar='',
-                                                       # lineterminator=''
-                                                       # lineterminator='\r'
-                                                       # lineterminator='\n'
-                                                       # lineterminator='\r\n'
-                                                       # lineterminator='\n\r'
-                                                       # skipinitialspace=True,
-                                                       # strict=False
-                                                       )
-                            print(5)
-                            for cell in reader_object:
-                                print(51)
-                                print(cell, end='')
-                            print(6)
-
-                            # code_page = self.get_codepage(fp)
-                            # print(code_page)
-
-                            reader = csv.reader(fp)
-                            for key, row in enumerate(reader, start=1):
-                                # проверка на наличие в файле всех требующихся полей, поиск ведётся в первой строке
-                                print(key, row)
-
-                            print(7)
+                            # print(3)
+                            # for cell in reader_object:
+                            #     print(31)
+                            #     print(cell, end='')
+                            # print(4)
+                            #
+                            # # code_page = self.get_codepage(fp)
+                            # # print(code_page)
+                            #
+                            # reader = csv.reader(fp)
+                            # for key, row in enumerate(reader, start=1):
+                            #     # проверка на наличие в файле всех требующихся полей, поиск ведётся в первой строке
+                            #     print(key, row)
+                            #
+                            # print(7)
+                    else:
+                        # TODO
+                        # если в архиве не найден csv файл
+                        pass
 
             zf.close()
             fp.close()
@@ -330,8 +309,11 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         if take_file:
             file_full_path = take_file
             file_full_name = os.path.basename(take_file)
-            file_name = os.path.basename(take_file).rsplit('.', 1)[0]
-            file_ext = os.path.basename(take_file).rsplit('.', 1)[1]
+            file_name = file_full_name.rsplit('.', 1)[0]
+            if len(file_full_name.rsplit('.', 1)) > 1:
+                file_ext = file_full_name.rsplit('.', 1)[1]
+            else:
+                file_ext = ''
 
             return file_full_path, file_full_name, file_name, file_ext
         else:
