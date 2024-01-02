@@ -170,9 +170,11 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             # файл экземпляр ZipFile
             zf = zipfile.ZipFile(take_file[0])
 
-            # поиск файла csv в архиве
+            # поиск файла csv в архиве zip перебором всех элементов архива
             for file_in_zf in zf.infolist():
+                # если не папка, то продолжить
                 if not file_in_zf.is_dir():
+                    # проверка расширения
                     if self.parse_file_parts(file_in_zf.filename)[3].lower() == 'csv':
                         # сравнение имён файлов между именем архива и именем csv файла, они должны почти совпадать
                         diff_ratio_file_names = difflib.SequenceMatcher(
@@ -186,17 +188,19 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 f'Выберите не переименованный файл скачанный с сайта\n\n'
                                 f'или выберите другой.')
                         else:
+                            # нужный файл найден, попытка прочитать
                             with zf.open(file_in_zf.filename) as file_csv:
                                 # text = file_csv.readlines()
                                 text = file_csv.read()
+                                # print(text)
 
-                                # преобразование полученного из файла в csv во временный файл дабы не распаковывать
-                                # import tempfile
-                                # fp = tempfile.TemporaryFile()
-                                # fp.write(text)
+                                # преобразование полученного из файла в csv во временный файл чтобы не распаковывать
+                                import tempfile
+                                fp = tempfile.TemporaryFile()
+                                fp.write(text)
                                 # fp.seek(0)
                                 # fp.read()
-                                # fp.close()
+                                fp.close()
 
                             # print(text.decode('utf-8'))
                             # print(text.decode('cp1251'))
@@ -204,23 +208,43 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             # TODO
                             # тут ошибка
 
-                            sys_lcl = locale.getpreferredencoding()
-                            print(locale.getpreferredencoding())
+                            # sys_lcl = locale.getpreferredencoding()
+                            # print(locale.getpreferredencoding())
                             # code_page = self.get_codepage(fp)
 
-                            reader_object = csv.reader(text.decode(sys_lcl),
+                            print(fp)
+                            fp.seek(0)
+                            fp.read()
+                            reader_object = csv.reader(#text.decode('utf-8'),
+                                                       fp,
                                                        # delimiter=',',
                                                        # doublequote=False,
                                                        # quotechar='',
+                                                       # lineterminator=''
+                                                       # lineterminator='\r'
+                                                       # lineterminator='\n'
                                                        # lineterminator='\r\n'
+                                                       # lineterminator='\n\r'
                                                        # skipinitialspace=True,
                                                        # strict=False
                                                        )
+                            print(reader_object)
                             for cell in reader_object:
+                                print(11)
                                 print(cell, end='')
-                            print()
+                            print(22)
+
+                            # code_page = self.get_codepage(fp)
+                            # print(code_page)
+
+                            reader = csv.reader(fp)
+                            for key, row in enumerate(reader, start=1):
+                                # проверка на наличие в файле всех требующихся полей, поиск ведётся в первой строке
+                                print(key, row)
+
 
             zf.close()
+            fp.close()
 
         # активация объектов на форме зависящих от выбора файла
         self.activate_objects()
