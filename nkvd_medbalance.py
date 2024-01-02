@@ -189,19 +189,37 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 f'или выберите другой.')
                         else:
                             # нужный файл найден, попытка прочитать
-                            with zf.open(file_in_zf.filename) as file_csv:
-                                # text = file_csv.readlines()
-                                text = file_csv.read()
+                            with zf.open(file_in_zf.filename) as file_csv_in_zip:
+                                # text = file_csv_in_zip.readlines()
+                                text = file_csv_in_zip.read()
+                                # text1 = file_csv_in_zip.read()
+                                # print(text1)
+                                # print(text1.decode('utf-8'))
+                                # text = text1.decode('utf-8')
                                 # print(text)
 
-                                # преобразование полученного из файла в csv во временный файл чтобы не распаковывать
-                                import tempfile
-                                fp = tempfile.TemporaryFile()
+                            print(1)
+                            print(text)
+
+                            # преобразование полученного из файла в csv во временный файл чтобы не распаковывать
+                            import tempfile
+
+                            print(2)
+                            with tempfile.NamedTemporaryFile(delete=False) as fp:
                                 fp.write(text)
+                                fp.close()
+                                # with open(fp.name, mode='rb') as f:
+                                #     f.read()
+                                # print(fp)
+                                # print(f)
+
+                                # fp = tempfile.TemporaryFile()
+                                # fp.write(text)
                                 # fp.seek(0)
                                 # fp.read()
-                                fp.close()
+                                # fp.close()
 
+                            print(3)
                             # print(text.decode('utf-8'))
                             # print(text.decode('cp1251'))
 
@@ -212,9 +230,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             # print(locale.getpreferredencoding())
                             # code_page = self.get_codepage(fp)
 
-                            print(fp)
-                            fp.seek(0)
-                            fp.read()
+                            print(4)
+                            # fp.seek(0)
+                            # fp.read()
                             reader_object = csv.reader(#text.decode('utf-8'),
                                                        fp,
                                                        # delimiter=',',
@@ -228,11 +246,11 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                                        # skipinitialspace=True,
                                                        # strict=False
                                                        )
-                            print(reader_object)
+                            print(5)
                             for cell in reader_object:
-                                print(11)
+                                print(51)
                                 print(cell, end='')
-                            print(22)
+                            print(6)
 
                             # code_page = self.get_codepage(fp)
                             # print(code_page)
@@ -242,6 +260,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 # проверка на наличие в файле всех требующихся полей, поиск ведётся в первой строке
                                 print(key, row)
 
+                            print(7)
 
             zf.close()
             fp.close()
