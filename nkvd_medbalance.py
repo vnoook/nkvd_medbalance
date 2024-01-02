@@ -49,7 +49,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.selected_file = None
         # self.headers = ('sgtin', 'status', 'withdrawal_type', 'batch',
         #                 'expiration_date', 'gtin', 'prod_name', 'last_tracing_op_date')
-        self.headers = ('sgtin', 'status', 'gtin', 'prod_name')
+        self.headers = ('sgtin', 'status')
 
         # ОБЪЕКТЫ НА ФОРМЕ
         # label_prompt_select_file
@@ -189,29 +189,25 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 f'Выберите не переименованный файл скачанный с сайта\n\n'
                                 f'или выберите другой.')
                         else:
-                            print(1)
                             # нужный файл найден, чтение из файла данных в бинарном виде
                             with zf.open(file_in_zf.filename) as file_csv_in_zip:
                                 text = file_csv_in_zip.read()
-                            # print(text)
 
-                            print(2)
                             # бинарные данные записываются во временный файл
                             with tempfile.NamedTemporaryFile(prefix='_from_zip_', suffix='.csv', delete=False) as fp:
                                 fp.write(text)
+                                # чтение переводится в начало файла
                                 fp.seek(0)
-                                # print(fp.read())
-
-                                print(fp.name)
+                                # пока файл не закрыт получаю его именя
                                 file_set = self.parse_file_parts(fp.name)
-                                print(file_set)
+                                # и передаю его в обработку данных
                                 self.take_csv(file_set)
 
+                            # закрываю файл
                             fp.close()
-                    else:
-                        # TODO
-                        # если в архиве не найден csv файл
-                        pass
+                    # else:
+                    #     PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка',
+                    #                                             f'Файл\n\n"{take_file[0]}"\n\n не содержит csv файла.')
             zf.close()
 
         # активация объектов на форме зависящих от выбора файла
@@ -266,10 +262,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         # TODO
         # тут вызвать выгрузку в табличную часть или это сделать в take_csv (252 строка)
-
-        print(output_list)
-
-        # return output_list
+        print(*output_list, sep='\n')
+        return output_list
 
     # функция создания отчёта
     def report_to_xls(self):
