@@ -9,14 +9,17 @@ df = pd.read_csv(
                  # r'c:\soft\python3\__programki__\nkvd_medbalance\fd_pd_full.csv',
                  # names=headers,
                  # delimiter=',',
+                 # sep=',',
                  dtype=object,
                  # dtype=str,
+                 # quotechar='"',
+                 # doublequote=False,
                  )
 
 print(df.to_string())
 
-print()
+# print()
 # print(df.astype(str))
-print()
+# print()
 
 # print(df[headers].to_string())
