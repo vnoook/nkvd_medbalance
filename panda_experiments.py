@@ -5,17 +5,18 @@ import pandas as pd
 headers = ['sgtin', 'status']
 
 df = pd.read_csv(
-                 # r'c:\soft\python3\__programki__\nkvd_medbalance\fd_pd.csv',
-                 r'c:\soft\python3\__programki__\nkvd_medbalance\fd_pd_full.csv',
-                 # names=['sgtin', 'status'],
-                 # delimiter=','
+                 r'c:\soft\python3\__programki__\nkvd_medbalance\fd_pd.csv',
+                 # r'c:\soft\python3\__programki__\nkvd_medbalance\fd_pd_full.csv',
+                 # names=headers,
+                 # delimiter=',',
+                 dtype=object,
+                 # dtype=str,
                  )
 
-# df.dropna()
-print(df.to_string(), sep='\n')
+print(df.to_string())
 
-# print(df['sgtin', 'status'].to_string())
-# print(df['sgtin', 'status'])
+print()
+# print(df.astype(str))
+print()
 
-# for val in df.iterrows():
-#     print(val)
+# print(df[headers].to_string())
