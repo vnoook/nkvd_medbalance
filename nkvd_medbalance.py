@@ -19,6 +19,7 @@ import zipfile
 import difflib
 import chardet
 import tempfile
+import pandas as pd
 # import locale
 # import openpyxl
 # import openpyxl.utils
