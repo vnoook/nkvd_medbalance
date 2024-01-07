@@ -48,9 +48,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.info_for_open_file = 'Выберите файл (.ZIP) или (.CSV)'
         self.text_empty_path_file = 'файл пока не выбран'
         self.selected_file = None
-        # self.headers = ('sgtin', 'status', 'withdrawal_type', 'batch',
-        #                 'expiration_date', 'gtin', 'prod_name', 'last_tracing_op_date')
-        self.headers = ('sgtin', 'status')
+        self.headers = ['sgtin', 'status', 'withdrawal_type', 'batch',
+                        'expiration_date', 'gtin', 'prod_name', 'last_tracing_op_date']
+        # self.headers = ['sgtin', 'status', 'gtin']
 
         # ОБЪЕКТЫ НА ФОРМЕ
         # label_prompt_select_file
@@ -148,6 +148,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 self.take_zip(file_set)
             elif file_set[3] == 'csv':
                 self.take_csv(file_set)
+
+                self.take_csv_pandas(file_set)
+
             else:
                 # не могу определить расширение файла
                 pass
@@ -203,6 +206,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 file_set = self.parse_file_parts(fp.name)
                                 # и передаю его в обработку данных
                                 self.take_csv(file_set)
+                                self.take_csv_pandas(file_set)
 
                             # закрываю файл
                             fp.close()
@@ -214,7 +218,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # активация объектов на форме зависящих от выбора файла
         self.activate_objects()
 
-    # функция чтения csv файла
+    # чтение csv файла
     def take_csv(self, file_kit):
         # определение кодировки входных данных
         code_page = self.get_codepage(file_kit[0])
@@ -244,6 +248,25 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             else:
                 # информационное окно о пустом файле csv
                 PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка', f'Файл пуст. Переформируйте файл.')
+
+    # чтение csv файла pandas
+    def take_csv_pandas(self, file_kit):
+        # определение кодировки входных данных
+        code_page = self.get_codepage(file_kit[0])
+
+        headers = self.headers
+
+        try:
+            df = pd.read_csv(file_kit[0], encoding=code_page, dtype=object)
+            print(df[headers].to_string())
+        except pd.errors.EmptyDataError:
+            pass
+        except NameError:
+            pass
+        except KeyError:
+            pass
+        except pd.errors.ParserError:
+            pass
 
     # функция создания списка с данными по шаблону self.headers, чтобы колонки шли в порядке self.headers
     def create_csv_list(self, input_list: list):

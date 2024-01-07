@@ -16,10 +16,9 @@ df = pd.read_csv(
                  # doublequote=False,
                  )
 
-print(df.to_string())
-
+# print(df.to_string())
 # print()
 # print(df.astype(str))
-# print()
-
-# print(df[headers].to_string())
+print(df)
+print()
+print(df[headers])
