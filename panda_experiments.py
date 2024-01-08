@@ -18,11 +18,14 @@ df_all = pd.read_csv(
 
 print(df_all.to_string())
 # print()
-df1 = df_all[headers]
+df1 = df_all[['sgtin', 'status']]
 print(df1)
 
-df1 = df_all[headers]
-print(df1)
+df2 = df_all[['sgtin', 'gtin']]
+print(df2)
+
+df3 = df_all[['sgtin', 'status', 'sell_name', 'prod_name']]
+print(df3)
 
 # df_new1 = df.pivot_table(['sgtin'],['status'], aggfunc='min', fill_value = 0)
 # print(df_new1.to_string())
