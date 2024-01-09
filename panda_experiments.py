@@ -5,8 +5,8 @@ import pandas as pd
 headers = ['sgtin', 'status']
 
 df_all = pd.read_csv(
-                 r'c:\soft\python3\__programki__\nkvd_medbalance\fd_pd.csv',
-                 # r'c:\soft\python3\__programki__\nkvd_medbalance\fd_pd_full.csv',
+                 r'fd_pd.csv',
+                 # r'fd_pd_full.csv',
                  # names=headers,
                  # delimiter=',',
                  # sep=',',
@@ -31,19 +31,19 @@ df3 = df_all[['sgtin', 'status', 'sell_name', 'prod_name']]
 print(df3)
 print()
 
-df_new1 = df1.pivot_table(['sgtin'],['status'], aggfunc='min', fill_value = 0)
+df_new1 = df1.pivot_table(['sgtin'], ['status'], aggfunc='min', fill_value = 0)
 print(df_new1.to_string())
 print()
 
-df_new2 = df1.pivot_table(['sgtin'],['status'], aggfunc='max', fill_value = 0)
+df_new2 = df1.pivot_table(['sgtin'], ['status'], aggfunc='max', fill_value = 0)
 print(df_new2.to_string())
 print()
 
-df_new3 = df1.pivot_table(['status'],['sgtin'], aggfunc='count', fill_value = 0)
+df_new3 = df1.pivot_table(['status'], ['sgtin'], aggfunc='count', fill_value = 0)
 print(df_new3.to_string())
 print()
 
-df_new4 = df1.pivot_table(['sgtin'],['status'], aggfunc='count', fill_value = 0)
+df_new4 = df1.pivot_table(['sgtin'], ['status'], aggfunc='count', fill_value = 0)
 print(df_new4.to_string())
 print()
 
