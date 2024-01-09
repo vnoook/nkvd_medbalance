@@ -5,16 +5,11 @@ import pandas as pd
 headers = ['sgtin', 'status']
 
 df_all = pd.read_csv(
-                 r'fd_pd.csv',
+                 # r'fd_pd.csv',
                  # r'fd_pd_full.csv',
-                 # names=headers,
-                 # delimiter=',',
-                 # sep=',',
-                 dtype=object,
-                 # dtype=str,
-                 # quotechar='"',
-                 # doublequote=False,
-                 )
+                 r'fd_pd_new.csv',
+                 # r'8eb6f4c7-5407-4f5f-9ace-7da6cf4a6ea7-0.csv',
+                 dtype=object)
 
 print(df_all.to_string())
 print()
@@ -27,7 +22,7 @@ df2 = df_all[['sgtin', 'gtin']]
 print(df2)
 print()
 
-df3 = df_all[['sgtin', 'status', 'sell_name', 'prod_name']]
+df3 = df_all[['sgtin', 'status', 'prod_name', 'full_prod_name']]
 print(df3)
 print()
 

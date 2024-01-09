@@ -48,9 +48,11 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.info_for_open_file = 'Выберите файл (.ZIP) или (.CSV)'
         self.text_empty_path_file = 'файл пока не выбран'
         self.selected_file = None
-        self.headers = ['sgtin', 'status', 'withdrawal_type', 'batch',
-                        'expiration_date', 'gtin', 'prod_name', 'last_tracing_op_date']
-        # self.headers = ['sgtin', 'status', 'gtin']
+        # self.headers = ['sgtin', 'status', 'withdrawal_type', 'batch', 'expiration_date',
+        #                 'gtin', 'prod_name', 'last_tracing_op_date']
+        # self.headers = ['sgtin', 'status', 'batch', 'expiration_date', 'gtin', 'prod_name',
+        #                 'full_prod_name', 'last_tracing_op_date']
+        self.headers = ['sgtin', 'status', 'gtin']
 
         # ОБЪЕКТЫ НА ФОРМЕ
         # label_prompt_select_file
