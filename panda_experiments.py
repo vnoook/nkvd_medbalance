@@ -9,16 +9,21 @@ df_all = pd.read_csv(
                  # r'8eb6f4c7-5407-4f5f-9ace-7da6cf4a6ea7-0.csv',
                  dtype=object)
 
-print(df_all.to_string())
-print()
+# print(df_all.to_string())
+# print()
 
 df1 = df_all[headers]
 print(df1.to_string())
 print()
 
-df_new1 = df1.pivot_table(['sgtin'], ['status'], aggfunc='min', fill_value = 0)
-print(df_new1.to_string())
+df1_new1 = df1.pivot_table(['prod_name'], ['full_prod_name'], aggfunc='count', fill_value = 0)
+print(df1_new1.to_string())
 print()
+
+df1_new2 = df1.pivot_table(['full_prod_name'], ['prod_name'], aggfunc='count', fill_value = 0)
+print(df1_new2.to_string())
+print()
+
 
 # df_new2 = df1.pivot_table(['sgtin'], ['status'], aggfunc='max', fill_value = 0)
 # print(df_new2.to_string())
