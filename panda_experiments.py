@@ -1,46 +1,39 @@
 import pandas as pd
 
-# headers = ['sgtin', 'status', 'withdrawal_type', 'batch', 'expiration_date',
-#            'gtin', 'prod_name', 'last_tracing_op_date']
-headers = ['sgtin', 'status']
+headers = ['prod_name', 'full_prod_name','sgtin']
 
 df_all = pd.read_csv(
-                 # r'fd_pd.csv',
+                 r'fd_pd.csv',
                  # r'fd_pd_full.csv',
-                 r'fd_pd_new.csv',
+                 # r'fd_pd_new.csv',
                  # r'8eb6f4c7-5407-4f5f-9ace-7da6cf4a6ea7-0.csv',
                  dtype=object)
 
 print(df_all.to_string())
 print()
 
-df1 = df_all[['sgtin', 'status']]
-print(df1)
-print()
-
-df2 = df_all[['sgtin', 'gtin']]
-print(df2)
-print()
-
-df3 = df_all[['sgtin', 'status', 'prod_name', 'full_prod_name']]
-print(df3)
+df1 = df_all[headers]
+print(df1.to_string())
 print()
 
 df_new1 = df1.pivot_table(['sgtin'], ['status'], aggfunc='min', fill_value = 0)
 print(df_new1.to_string())
 print()
 
-df_new2 = df1.pivot_table(['sgtin'], ['status'], aggfunc='max', fill_value = 0)
-print(df_new2.to_string())
-print()
+# df_new2 = df1.pivot_table(['sgtin'], ['status'], aggfunc='max', fill_value = 0)
+# print(df_new2.to_string())
+# print()
+#
+# df_new3 = df1.pivot_table(['status'], ['sgtin'], aggfunc='count', fill_value = 0)
+# print(df_new3.to_string())
+# print()
+#
+# df_new4 = df1.pivot_table(['sgtin'], ['status'], aggfunc='count', fill_value = 0)
+# print(df_new4.to_string())
+# print()
 
-df_new3 = df1.pivot_table(['status'], ['sgtin'], aggfunc='count', fill_value = 0)
-print(df_new3.to_string())
-print()
 
-df_new4 = df1.pivot_table(['sgtin'], ['status'], aggfunc='count', fill_value = 0)
-print(df_new4.to_string())
-print()
+
 
 # df_new2 = df.pivot_table(['sgtin'],['status'], aggfunc='sum', fill_value = 0)
 # sumtbl = SampleAccounts.pivot_table(['inf_confirm_date'],  ['tcs_customer_id','open_date','final_pmt_date',
