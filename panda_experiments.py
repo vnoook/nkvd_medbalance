@@ -1,7 +1,8 @@
 import pandas as pd
 
 # названия колонок для чтения в csv
-headers = ['prod_name', 'full_prod_name']
+# headers = ['prod_name', 'full_prod_name']
+headers = ['prod_name', 'full_prod_name', 'sgtin']
 
 # прочитать весь файл
 df_all = pd.read_csv(
@@ -26,8 +27,10 @@ q_prod_name.to_excel('output1.xlsx')
 
 # подсчёт full_prod_name в колонке относительно prod_name
 df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name'], aggfunc='count', fill_value = 0)
-# print(df_group1.to_string())
+print(df_group1.to_string())
 # print()
+df_group1.to_excel('output2.xlsx')
+exit()
 
 df_group1 = df_group1.reset_index()
 for index, row in df_group1.iterrows():
