@@ -30,7 +30,8 @@ df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name'], aggfu
 print(df_group1.to_string())
 # print()
 df_group1.to_excel('output2.xlsx')
-exit()
+
+# exit()
 
 df_group1 = df_group1.reset_index()
 for index, row in df_group1.iterrows():
