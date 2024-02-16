@@ -40,10 +40,6 @@ for index, row in df_group1.iterrows():
 
     for val in headers:
         print(f'{row[val] = }')
-    # print(f'{row['prod_name'] = }')
-    # print(f'{row['full_prod_name'] = }')
-    # print(f'{row['status'] = }')
-    # print(f'{row['sgtin'] = }')
 
     # print()
     # for i in row:
