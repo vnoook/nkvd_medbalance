@@ -22,7 +22,7 @@ df = df_all[headers]
 q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count', fill_value = 0)
 # print(q_prod_name.to_string())
 # print()
-q_prod_name.to_excel('output1.xlsx')
+q_prod_name.to_excel('output1.xlsx', sheet_name='Sheet2')
 
 # подсчёт full_prod_name в колонке относительно prod_name
 df_group1 = df.pivot_table(['prod_name'],
@@ -31,7 +31,8 @@ df_group1 = df.pivot_table(['prod_name'],
                            fill_value = 0)
 # print(df_group1.to_string())
 # print()
-df_group1.to_excel('output2.xlsx')
+df_group1.to_excel('output1.xlsx', sheet_name='Sheet1')
+# df_group1.to_excel('output2.xlsx')
 
 df_group1 = df_group1.reset_index()
 for index, row in df_group1.iterrows():
