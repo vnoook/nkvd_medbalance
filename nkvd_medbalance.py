@@ -52,7 +52,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         #                 'gtin', 'prod_name', 'last_tracing_op_date']
         # self.headers = ['sgtin', 'status', 'batch', 'expiration_date', 'gtin', 'prod_name',
         #                 'full_prod_name', 'last_tracing_op_date']
-        self.headers = ['sgtin', 'status', 'gtin']
+        self.headers = ['prod_name', 'full_prod_name', 'status', 'sgtin']
 
         # ОБЪЕКТЫ НА ФОРМЕ
         # label_prompt_select_file
