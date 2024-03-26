@@ -293,11 +293,30 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
     # функция создания отчёта
     def report_to_xls(self):
-        pass
+        self.create_xls()
+
+
+
+
 
     # функция создания файла xls для отчёта
     def create_xls(self):
-        pass
+        # создание книги xls и активация рабочего листа
+        wb = openpyxl.Workbook()
+        wb.create_sheet('first')
+        wb.create_sheet('second')
+        wb_s = wb['first']
+        # wb_s = wb.active
+
+        # создание xlsx файла
+        file_xlsx = openpyxl.Workbook()
+        file_xlsx_s = file_xlsx.active
+
+        wb.save('out.xlsx')
+
+
+
+
 
     # получение кодировки файла
     @staticmethod
