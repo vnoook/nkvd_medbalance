@@ -21,7 +21,7 @@ import chardet
 import tempfile
 import pandas as pd
 # import locale
-# import openpyxl
+import openpyxl
 # import openpyxl.utils
 # import openpyxl.styles
 # import datetime
@@ -293,6 +293,10 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
     # функция создания отчёта
     def report_to_xls(self):
+        pass
+
+    # функция создания файла xls для отчёта
+    def create_xls(self):
         pass
 
     # получение кодировки файла
