@@ -49,10 +49,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.info_for_open_file = 'Выберите файл (.ZIP) или (.CSV)'
         self.text_empty_path_file = 'файл пока не выбран'
         self.selected_file = None
-        # self.headers = ['sgtin', 'status', 'withdrawal_type', 'batch', 'expiration_date',
-        #                 'gtin', 'prod_name', 'last_tracing_op_date']
-        # self.headers = ['sgtin', 'status', 'batch', 'expiration_date', 'gtin', 'prod_name',
-        #                 'full_prod_name', 'last_tracing_op_date']
         self.headers = ['prod_name', 'full_prod_name', 'status', 'sgtin']
 
         # ОБЪЕКТЫ НА ФОРМЕ
@@ -150,10 +146,11 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             if file_set[3] == 'zip':
                 self.take_zip(file_set)
             elif file_set[3] == 'csv':
-                self.take_csv(file_set)
+                # эта функция для обработки данных для табличной части
+                # self.take_csv(file_set)
 
+                # эта функция для обрабтки файла в пандасе для создания отчёта в экселе
                 self.take_csv_pandas(file_set)
-
             else:
                 # не могу определить расширение файла
                 pass
@@ -169,6 +166,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
     # чтение zip файла
     def take_zip(self, take_file):
+        # проверка на формат файла zip
         if not zipfile.is_zipfile(take_file[0]):
             # информационное окно про неправильный zip файл
             PyQt5.QtWidgets.QMessageBox.information(self,
@@ -252,6 +250,13 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 # информационное окно о пустом файле csv
                 PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка', f'Файл пуст. Переформируйте файл.')
 
+
+
+
+
+
+
+
     # чтение csv файла pandas
     def take_csv_pandas(self, file_kit):
         # определение кодировки входных данных
@@ -270,6 +275,46 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             pass
         except pd.errors.ParserError:
             pass
+
+        # # названия колонок для чтения в csv
+        # headers = ['prod_name', 'full_prod_name', 'status', 'sgtin']
+        #
+        # # прочитать весь файл
+        # df_all = pd.read_csv(
+        #     r'fd_pd.csv',
+        #     # r'fd_pd_full.csv',
+        #     dtype=object)
+        #
+        # # выбрать нужные колонки
+        # df = df_all[headers]
+        #
+        # # посчитать количество prod_name
+        # q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count', fill_value=0)
+        # q_prod_name.to_excel('out.xlsx', sheet_name='Общий')
+        #
+        # # подсчёт full_prod_name в колонке относительно prod_name
+        # df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name', 'status', 'sgtin'],
+        #                            aggfunc='count', fill_value=0)
+        # df_group1.to_excel('output2.xlsx', sheet_name='Sheet1')
+        #
+        # df_group1 = df_group1.reset_index()
+        # for index, row in df_group1.iterrows():
+        #     for val in headers:
+        #         print(f'{row[val] = }')
+        #     print('*' * 155)
+        #
+        # df_group1.to_excel('output3.xlsx')
+
+
+
+
+
+
+
+
+
+
+
 
     # функция создания списка с данными по шаблону self.headers, чтобы колонки шли в порядке self.headers
     def create_csv_list(self, input_list: list):
