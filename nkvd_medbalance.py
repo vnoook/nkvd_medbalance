@@ -292,18 +292,22 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         print(*output_list, sep='\n')
         return output_list
 
-    # функция создания отчёта
-    def report_to_xls(self):
-        self.create_xls()
-
     # функция создания файла xls для отчёта
     def create_xls(self):
-        # создание книги xls и активация рабочего листа
+        # создание книги xls и двух листов, для общего отчёта и детального
         wb = openpyxl.Workbook()
         wb_s = wb.active
-        wb_s.title = 'first'
-        wb.create_sheet('second')
+        wb_s.title = 'Общий'
+        wb.create_sheet('Детальный')
         wb.save('out.xlsx')
+
+    # функция создания отчёта
+    def report_to_xls(self):
+        # TODO
+        # тут надо взять где-то данные, обработать и вставить их в эксель на два листа
+
+        # создаётся файл под отчёт, если данные имеются
+        self.create_xls()
 
     # получение кодировки файла
     @staticmethod
