@@ -205,7 +205,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 fp.seek(0)
                                 # пока файл не закрыт получаю его имя
                                 file_set = self.parse_file_parts(fp.name)
-                                # и передаю его в обработку данных
+                                # и передаю его в обработку данных (первое это табличная часть, второе в эксель)
                                 self.take_csv(file_set)
                                 self.take_csv_pandas(file_set)
 
