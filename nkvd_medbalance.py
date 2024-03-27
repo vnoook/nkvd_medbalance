@@ -4,6 +4,7 @@
 # zip распаковать и взять из него csv, а csv сразу пустить в работу
 # взять инфу в список из нужных колонок
 # сделать новые списки относительно алгоритма подсчёта остатков
+# создать файл xls и сделать в нём два листа, для подсчёта общего количества и детального списка
 #
 # Остаток поштучно-каждая строка -1 шт
 # Общее количество через фильтр по наименованию, потом по серии и количеству sgtin (или количество строчек)
@@ -214,7 +215,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             fp.close()
                     # else:
                     #     PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка',
-                    #                                             f'Файл\n\n"{take_file[0]}"\n\n не содержит csv файла.')
+                    #         f'Файл\n\n"{take_file[0]}"\n\n не содержит csv файла.')
             zf.close()
 
         # активация объектов на форме зависящих от выбора файла
@@ -295,28 +296,14 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
     def report_to_xls(self):
         self.create_xls()
 
-
-
-
-
     # функция создания файла xls для отчёта
     def create_xls(self):
         # создание книги xls и активация рабочего листа
         wb = openpyxl.Workbook()
-        wb.create_sheet('first')
+        wb_s = wb.active
+        wb_s.title = 'first'
         wb.create_sheet('second')
-        wb_s = wb['first']
-        # wb_s = wb.active
-
-        # создание xlsx файла
-        file_xlsx = openpyxl.Workbook()
-        file_xlsx_s = file_xlsx.active
-
         wb.save('out.xlsx')
-
-
-
-
 
     # получение кодировки файла
     @staticmethod
