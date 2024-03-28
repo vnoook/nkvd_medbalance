@@ -146,11 +146,12 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             if file_set[3] == 'zip':
                 self.take_zip(file_set)
             elif file_set[3] == 'csv':
-                # эта функция для обработки данных для табличной части
-                # self.take_csv(file_set)
-
                 # эта функция для обработки файла в пандас для создания отчёта в экселе
                 self.take_csv_pandas(file_set)
+
+                # TODO
+                # эта функция для обработки данных для табличной части
+                # self.take_csv(file_set)
             else:
                 # не могу определить расширение файла
                 pass
