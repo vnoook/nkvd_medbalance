@@ -276,37 +276,13 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         except pd.errors.ParserError:
             pass
 
-        # # названия колонок для чтения в csv
-        # headers = ['prod_name', 'full_prod_name', 'status', 'sgtin']
-        #
-        # # прочитать весь файл
-        # df_all = pd.read_csv(
-        #     r'fd_pd.csv',
-        #     # r'fd_pd_full.csv',
-        #     dtype=object)
-        #
-        # # выбрать нужные колонки
-        # df = df_all[headers]
-        #
-        # # посчитать количество prod_name
-        # q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count', fill_value=0)
-        # q_prod_name.to_excel('out.xlsx', sheet_name='Общий')
-        #
-        # # подсчёт full_prod_name в колонке относительно prod_name
-        # df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name', 'status', 'sgtin'],
-        #                            aggfunc='count', fill_value=0)
-        # df_group1.to_excel('output2.xlsx', sheet_name='Sheet1')
-        #
-        # df_group1 = df_group1.reset_index()
-        # for index, row in df_group1.iterrows():
-        #     for val in headers:
-        #         print(f'{row[val] = }')
-        #     print('*' * 155)
-        #
-        # df_group1.to_excel('output3.xlsx')
+    # функция создания отчёта
+    def report_to_xls(self):
+        # TODO
+        # тут надо взять где-то данные, обработать и вставить их в эксель на два листа
 
-
-
+        # создаётся файл под отчёт, если данные имеются
+        self.create_xls()
 
 
 
@@ -345,14 +321,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         wb_s.title = 'Общий'
         wb.create_sheet('Детальный')
         wb.save('out.xlsx')
-
-    # функция создания отчёта
-    def report_to_xls(self):
-        # TODO
-        # тут надо взять где-то данные, обработать и вставить их в эксель на два листа
-
-        # создаётся файл под отчёт, если данные имеются
-        self.create_xls()
 
     # получение кодировки файла
     @staticmethod
@@ -402,3 +370,32 @@ def main_app():
 # запуск основного окна
 if __name__ == '__main__':
     main_app()
+
+# # названия колонок для чтения в csv
+# headers = ['prod_name', 'full_prod_name', 'status', 'sgtin']
+#
+# # прочитать весь файл
+# df_all = pd.read_csv(
+#     r'fd_pd.csv',
+#     # r'fd_pd_full.csv',
+#     dtype=object)
+#
+# # выбрать нужные колонки
+# df = df_all[headers]
+#
+# # посчитать количество prod_name
+# q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count', fill_value=0)
+# q_prod_name.to_excel('out.xlsx', sheet_name='Общий')
+#
+# # подсчёт full_prod_name в колонке относительно prod_name
+# df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name', 'status', 'sgtin'],
+#                            aggfunc='count', fill_value=0)
+# df_group1.to_excel('output2.xlsx', sheet_name='Sheet1')
+#
+# df_group1 = df_group1.reset_index()
+# for index, row in df_group1.iterrows():
+#     for val in headers:
+#         print(f'{row[val] = }')
+#     print('*' * 155)
+#
+# df_group1.to_excel('output3.xlsx')
