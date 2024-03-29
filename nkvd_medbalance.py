@@ -267,7 +267,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         try:
             df = pd.read_csv(file_kit[0], encoding=code_page, dtype=object)
-            print(df[headers].to_string())
+            # print(df[headers].to_string())
         except pd.errors.EmptyDataError:
             pass
         except NameError:
@@ -311,7 +311,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         # TODO
         # тут вызвать выгрузку в табличную часть или это сделать в take_csv (252 строка)
-        print(*output_list, sep='\n')
+        # print(*output_list, sep='\n')
         return output_list
 
     # функция создания файла xls для отчёта
