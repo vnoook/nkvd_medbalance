@@ -259,32 +259,30 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
     # функция создания отчёта xls
     # данные обработать и вставить их в эксель на два листа
     def report_to_xls(self):
-        # создаётся файл под отчёт, если данные имеются
-        self.create_xls()
-
         # определение расширения файла и выбор действий
         file_set = self.parse_file_parts(self.selected_file)
 
         # определение кодировки входных данных
         code_page = self.get_codepage(file_set[0])
 
-        headers = self.headers
+        # имя файла для выгрузки
+        xlsx_file = 'out' + self.get_currect_datetime() + '.xlsx'
 
         try:
             # прочитать весь файл
             df_all = pd.read_csv(file_set[0], encoding=code_page, dtype=object)
 
+            headers = self.headers
             # выбрать нужные колонки
             df = df_all[headers]
 
             # создание подборок для выгрузки каждого отдельного листа
-            q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count', fill_value=0)
-            df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name', 'status', 'sgtin'],
-                                       aggfunc='count', fill_value=0)
+            df_q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count')
+            df_group1 = df.pivot_table(['prod_name'], headers)
             df_group2 = df_group1.reset_index()
 
-            with pd.ExcelWriter('out.xlsx') as writer:
-                q_prod_name.to_excel(writer, sheet_name='Общий')
+            with pd.ExcelWriter(xlsx_file) as writer:
+                df_q_prod_name.to_excel(writer, sheet_name='Общий')
                 df_group1.to_excel(writer, sheet_name='Структурный')
                 df_group2.to_excel(writer, sheet_name='Детальный', index= False)
 
@@ -318,16 +316,10 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         # print(*output_list, sep='\n')
         return output_list
 
-    # функция создания файла xls для отчёта
+    # преобразование текущей даты в строку
     @staticmethod
-    def create_xls():
-        # создание книги xls и двух листов, для общего отчёта и детального
-        wb = openpyxl.Workbook()
-        wb_s = wb.active
-        wb_s.title = 'Общий'
-        wb.create_sheet('Структурный')
-        wb.create_sheet('Детальный')
-        wb.save('out.xlsx')
+    def get_currect_datetime():
+        return '11'
 
     # получение кодировки файла
     @staticmethod
