@@ -254,27 +254,31 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         # TODO
         # тут дальше дожна быть обработка и выгрузка в табличную часть,
-        # но её я пока пропускаю
+        # но её я пока не написал
+
+    # функция создания отчёта xls
+    # данные обработать и вставить их в эксель на два листа
+    def report_to_xls(self):
+        # определение расширения файла и выбор действий
+        file_set = self.parse_file_parts(self.selected_file)
 
         # эта функция для обработки файла в пандас для создания отчёта в эксель
-        self.take_csv_pandas(file_kit)
+        self.take_csv_pandas(file_set)
 
-    # чтение csv файла pandas
-    def take_csv_pandas(self, file_kit):
         # определение кодировки входных данных
-        code_page = self.get_codepage(file_kit[0])
+        code_page = self.get_codepage(file_set[0])
 
         headers = self.headers
 
         try:
             # прочитать весь файл
             df = pd.read_csv(
-                file_kit[0],
+                file_set[0],
                 # r'fd_pd.csv',
                 # r'fd_pd_full.csv',
                 dtype=object)
 
-            # df = pd.read_csv(file_kit[0], encoding=code_page, dtype=object)
+            # df = pd.read_csv(file_set[0], encoding=code_page, dtype=object)
             print(df[headers].to_string())
 
             # # выбрать нужные колонки
@@ -304,11 +308,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             pass
         except pd.errors.ParserError:
             pass
-
-    # функция создания отчёта
-    def report_to_xls(self):
-        # TODO
-        # тут надо взять где-то данные, обработать и вставить их в эксель на два листа
 
         # создаётся файл под отчёт, если данные имеются
         self.create_xls()
