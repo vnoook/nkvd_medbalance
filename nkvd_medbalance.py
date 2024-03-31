@@ -146,12 +146,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             if file_set[3] == 'zip':
                 self.take_zip(file_set)
             elif file_set[3] == 'csv':
-                # эта функция для обработки файла в пандас для создания отчёта в экселе
-                self.take_csv_pandas(file_set)
-
-                # TODO
                 # эта функция для обработки данных для табличной части
-                # self.take_csv(file_set)
+                self.take_csv(file_set)
             else:
                 # не могу определить расширение файла
                 pass
@@ -208,7 +204,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 file_set = self.parse_file_parts(fp.name)
                                 # и передаю его в обработку данных (первое это табличная часть, второе в эксель)
                                 self.take_csv(file_set)
-                                self.take_csv_pandas(file_set)
 
                             # закрываю файл
                             fp.close()
@@ -236,7 +231,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                         PyQt5.QtWidgets.QMessageBox.information(self,
                             'Ошибка',
                             f'Файл "{file_kit[1]}"\n\nне содержит всех нужных полей.\n\n'
-                            f'Переформируйте файл с нужными или со всеми полями.')
+                            f'Переформируйте файл с нужными или со всеми полями.\n\n'
+                            f'{self.headers}')
                         break
                 gathering_list.append(row)
 
@@ -251,7 +247,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 # информационное окно о пустом файле csv
                 PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка', f'Файл пуст. Переформируйте файл.')
 
-
+        # эта функция для обработки файла в пандас для создания отчёта в экселе
+        self.take_csv_pandas(file_set)
 
 
 
