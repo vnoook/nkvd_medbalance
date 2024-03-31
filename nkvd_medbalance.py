@@ -185,11 +185,13 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                                     take_file[2],
                                                     self.parse_file_parts(file_in_zf.filename)[2]).ratio()
                         if diff_ratio_file_names < 0.9:
-                            PyQt5.QtWidgets.QMessageBox.information(self,
+                            PyQt5.QtWidgets.QMessageBox.information(
+                                self,
                                 'Ошибка',
                                 f'Имя файла zip не совпадает с именам внутри архива.\n\n'
                                 f'Выберите не переименованный файл скачанный с сайта\n\n'
-                                f'или выберите другой.')
+                                f'или выберите другой.'
+                            )
                         else:
                             # нужный файл найден, чтение из файла данных в бинарном виде
                             with zf.open(file_in_zf.filename) as file_csv_in_zip:
@@ -228,11 +230,13 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 if key == 1:
                     if not all(val in row for val in self.headers):
                         # информационное окно об отсутствии минимально необходимых полей в файле
-                        PyQt5.QtWidgets.QMessageBox.information(self,
+                        PyQt5.QtWidgets.QMessageBox.information(
+                            self,
                             'Ошибка',
                             f'Файл "{file_kit[1]}"\n\nне содержит всех нужных полей.\n\n'
                             f'Переформируйте файл с нужными или со всеми полями.\n\n'
-                            f'{self.headers}')
+                            f'{self.headers}'
+                        )
                         break
                 gathering_list.append(row)
 
@@ -247,13 +251,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 # информационное окно о пустом файле csv
                 PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка', f'Файл пуст. Переформируйте файл.')
 
-        # эта функция для обработки файла в пандас для создания отчёта в экселе
-        self.take_csv_pandas(file_set)
-
-
-
-
-
+        # эта функция для обработки файла в пандас для создания отчёта в эксель
+        self.take_csv_pandas(file_kit)
 
     # чтение csv файла pandas
     def take_csv_pandas(self, file_kit):
@@ -265,6 +264,35 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         try:
             df = pd.read_csv(file_kit[0], encoding=code_page, dtype=object)
             # print(df[headers].to_string())
+
+            # # названия колонок для чтения в csv
+            # headers = ['prod_name', 'full_prod_name', 'status', 'sgtin']
+            #
+            # # прочитать весь файл
+            # df_all = pd.read_csv(
+            #     r'fd_pd.csv',
+            #     # r'fd_pd_full.csv',
+            #     dtype=object)
+            #
+            # # выбрать нужные колонки
+            # df = df_all[headers]
+            #
+            # # посчитать количество prod_name
+            # q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count', fill_value=0)
+            # q_prod_name.to_excel('out.xlsx', sheet_name='Общий')
+            #
+            # # подсчёт full_prod_name в колонке относительно prod_name
+            # df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name', 'status', 'sgtin'],
+            #                            aggfunc='count', fill_value=0)
+            # df_group1.to_excel('output2.xlsx', sheet_name='Sheet1')
+            #
+            # df_group1 = df_group1.reset_index()
+            # for index, row in df_group1.iterrows():
+            #     for val in headers:
+            #         print(f'{row[val] = }')
+            #     print('*' * 155)
+            #
+            # df_group1.to_excel('output3.xlsx')
         except pd.errors.EmptyDataError:
             pass
         except NameError:
@@ -281,14 +309,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         # создаётся файл под отчёт, если данные имеются
         self.create_xls()
-
-
-
-
-
-
-
-
 
     # функция создания списка с данными по шаблону self.headers, чтобы колонки шли в порядке self.headers
     def create_csv_list(self, input_list: list):
@@ -312,7 +332,8 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         return output_list
 
     # функция создания файла xls для отчёта
-    def create_xls(self):
+    @staticmethod
+    def create_xls():
         # создание книги xls и двух листов, для общего отчёта и детального
         wb = openpyxl.Workbook()
         wb_s = wb.active
@@ -368,32 +389,3 @@ def main_app():
 # запуск основного окна
 if __name__ == '__main__':
     main_app()
-
-# # названия колонок для чтения в csv
-# headers = ['prod_name', 'full_prod_name', 'status', 'sgtin']
-#
-# # прочитать весь файл
-# df_all = pd.read_csv(
-#     r'fd_pd.csv',
-#     # r'fd_pd_full.csv',
-#     dtype=object)
-#
-# # выбрать нужные колонки
-# df = df_all[headers]
-#
-# # посчитать количество prod_name
-# q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count', fill_value=0)
-# q_prod_name.to_excel('out.xlsx', sheet_name='Общий')
-#
-# # подсчёт full_prod_name в колонке относительно prod_name
-# df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name', 'status', 'sgtin'],
-#                            aggfunc='count', fill_value=0)
-# df_group1.to_excel('output2.xlsx', sheet_name='Sheet1')
-#
-# df_group1 = df_group1.reset_index()
-# for index, row in df_group1.iterrows():
-#     for val in headers:
-#         print(f'{row[val] = }')
-#     print('*' * 155)
-#
-# df_group1.to_excel('output3.xlsx')
