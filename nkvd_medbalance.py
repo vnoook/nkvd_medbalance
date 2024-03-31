@@ -11,6 +11,7 @@
 
 import os
 import sys
+import datetime
 import PyQt5
 import PyQt5.QtWidgets
 import PyQt5.QtCore
@@ -21,11 +22,10 @@ import difflib
 import chardet
 import tempfile
 import pandas as pd
-# import locale
 import openpyxl
 # import openpyxl.utils
 # import openpyxl.styles
-# import datetime
+# import locale
 # import shutil
 # import psutil
 
@@ -50,6 +50,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.text_empty_path_file = 'файл пока не выбран'
         self.selected_file = None
         self.headers = ['prod_name', 'full_prod_name', 'status', 'sgtin']
+        self.name_report_xlsx = 'НОККВД_остатки_'
 
         # ОБЪЕКТЫ НА ФОРМЕ
         # label_prompt_select_file
@@ -266,7 +267,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         code_page = self.get_codepage(file_set[0])
 
         # имя файла для выгрузки
-        xlsx_file = 'out' + self.get_currect_datetime() + '.xlsx'
+        xlsx_file = self.name_report_xlsx + self.get_currect_datetime() + '.xlsx'
 
         try:
             # прочитать весь файл
@@ -319,7 +320,9 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
     # преобразование текущей даты в строку
     @staticmethod
     def get_currect_datetime():
-        return '11'
+        curr_dt = datetime.datetime.now()
+        curr_dt_str = curr_dt.strftime('%m_%d_%Y_%H_%M_%S')
+        return curr_dt_str
 
     # получение кодировки файла
     @staticmethod
