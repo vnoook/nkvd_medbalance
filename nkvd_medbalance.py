@@ -259,11 +259,11 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
     # функция создания отчёта xls
     # данные обработать и вставить их в эксель на два листа
     def report_to_xls(self):
+        # создаётся файл под отчёт, если данные имеются
+        self.create_xls()
+
         # определение расширения файла и выбор действий
         file_set = self.parse_file_parts(self.selected_file)
-
-        # эта функция для обработки файла в пандас для создания отчёта в эксель
-        self.take_csv_pandas(file_set)
 
         # определение кодировки входных данных
         code_page = self.get_codepage(file_set[0])
@@ -272,34 +272,30 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         try:
             # прочитать весь файл
-            df = pd.read_csv(
-                file_set[0],
-                # r'fd_pd.csv',
-                # r'fd_pd_full.csv',
-                dtype=object)
+            df_all = pd.read_csv(file_set[0], encoding=code_page, dtype=object)
 
-            # df = pd.read_csv(file_set[0], encoding=code_page, dtype=object)
-            print(df[headers].to_string())
+            # выбрать нужные колонки
+            df = df_all[headers]
+            # print(df.to_string())
 
-            # # выбрать нужные колонки
-            # df = df_all[headers]
-            #
-            # # посчитать количество prod_name
-            # q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count', fill_value=0)
-            # q_prod_name.to_excel('out.xlsx', sheet_name='Общий')
-            #
-            # # подсчёт full_prod_name в колонке относительно prod_name
-            # df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name', 'status', 'sgtin'],
-            #                            aggfunc='count', fill_value=0)
-            # df_group1.to_excel('output2.xlsx', sheet_name='Sheet1')
-            #
-            # df_group1 = df_group1.reset_index()
+            # посчитать количество prod_name
+            q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count', fill_value=0)
+            q_prod_name.to_excel('output1.xlsx')
+            # print(q_prod_name.to_string())
+
+            # print()
+            # подсчёт full_prod_name в колонке относительно prod_name
+            df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name', 'status', 'sgtin'],
+                                       aggfunc='count', fill_value=0)
+            df_group1.to_excel('output2.xlsx')
+            # print(df_group1.to_string())
+
+            df_group1 = df_group1.reset_index()
             # for index, row in df_group1.iterrows():
             #     for val in headers:
             #         print(f'{row[val] = }')
             #     print('*' * 155)
-            #
-            # df_group1.to_excel('output3.xlsx')
+            df_group1.to_excel('output3.xlsx')
         except pd.errors.EmptyDataError:
             pass
         except NameError:
@@ -308,9 +304,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
             pass
         except pd.errors.ParserError:
             pass
-
-        # создаётся файл под отчёт, если данные имеются
-        self.create_xls()
 
     # функция создания списка с данными по шаблону self.headers, чтобы колонки шли в порядке self.headers
     def create_csv_list(self, input_list: list):
@@ -340,6 +333,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         wb = openpyxl.Workbook()
         wb_s = wb.active
         wb_s.title = 'Общий'
+        wb.create_sheet('Структурный')
         wb.create_sheet('Детальный')
         wb.save('out.xlsx')
 
