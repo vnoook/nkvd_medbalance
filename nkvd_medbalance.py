@@ -190,8 +190,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 'Ошибка',
                                 f'Имя файла zip не совпадает с именам внутри архива.\n\n'
                                 f'Выберите не переименованный файл скачанный с сайта\n\n'
-                                f'или выберите другой.'
-                            )
+                                f'или выберите другой.')
                         else:
                             # нужный файл найден, чтение из файла данных в бинарном виде
                             with zf.open(file_in_zf.filename) as file_csv_in_zip:
@@ -218,11 +217,14 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.activate_objects()
 
     # чтение csv файла
+    # и подготовка данных для выгрузки в табличную часть
     def take_csv(self, file_kit):
         # определение кодировки входных данных
         code_page = self.get_codepage(file_kit[0])
 
+        # список для читаемых данных
         gathering_list = []
+        # чтение данных из csv фйла построчно
         with open(file_kit[0], encoding=code_page, newline='') as fp:
             reader = csv.reader(fp)
             for key, row in enumerate(reader, start=1):
@@ -235,8 +237,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                             'Ошибка',
                             f'Файл "{file_kit[1]}"\n\nне содержит всех нужных полей.\n\n'
                             f'Переформируйте файл с нужными или со всеми полями.\n\n'
-                            f'{self.headers}'
-                        )
+                            f'{self.headers}')
                         break
                 gathering_list.append(row)
 
@@ -251,6 +252,10 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 # информационное окно о пустом файле csv
                 PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка', f'Файл пуст. Переформируйте файл.')
 
+        # TODO
+        # тут дальше дожна быть обработка и выгрузка в табличную часть,
+        # но её я пока пропускаю
+
         # эта функция для обработки файла в пандас для создания отчёта в эксель
         self.take_csv_pandas(file_kit)
 
@@ -262,18 +267,16 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         headers = self.headers
 
         try:
-            df = pd.read_csv(file_kit[0], encoding=code_page, dtype=object)
-            # print(df[headers].to_string())
+            # прочитать весь файл
+            df = pd.read_csv(
+                file_kit[0],
+                # r'fd_pd.csv',
+                # r'fd_pd_full.csv',
+                dtype=object)
 
-            # # названия колонок для чтения в csv
-            # headers = ['prod_name', 'full_prod_name', 'status', 'sgtin']
-            #
-            # # прочитать весь файл
-            # df_all = pd.read_csv(
-            #     r'fd_pd.csv',
-            #     # r'fd_pd_full.csv',
-            #     dtype=object)
-            #
+            # df = pd.read_csv(file_kit[0], encoding=code_page, dtype=object)
+            print(df[headers].to_string())
+
             # # выбрать нужные колонки
             # df = df_all[headers]
             #
