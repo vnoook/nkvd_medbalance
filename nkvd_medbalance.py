@@ -276,26 +276,18 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
             # выбрать нужные колонки
             df = df_all[headers]
-            # print(df.to_string())
 
-            # посчитать количество prod_name
+            # создание подборок для выгрузки каждого отдельного листа
             q_prod_name = df.pivot_table('full_prod_name', 'prod_name', aggfunc='count', fill_value=0)
-            q_prod_name.to_excel('output1.xlsx')
-            # print(q_prod_name.to_string())
-
-            # print()
-            # подсчёт full_prod_name в колонке относительно prod_name
             df_group1 = df.pivot_table(['prod_name'], ['prod_name', 'full_prod_name', 'status', 'sgtin'],
                                        aggfunc='count', fill_value=0)
-            df_group1.to_excel('output2.xlsx')
-            # print(df_group1.to_string())
+            df_group2 = df_group1.reset_index()
 
-            df_group1 = df_group1.reset_index()
-            # for index, row in df_group1.iterrows():
-            #     for val in headers:
-            #         print(f'{row[val] = }')
-            #     print('*' * 155)
-            df_group1.to_excel('output3.xlsx')
+            with pd.ExcelWriter('out.xlsx') as writer:
+                q_prod_name.to_excel(writer, sheet_name='Общий')
+                df_group1.to_excel(writer, sheet_name='Структурный')
+                df_group2.to_excel(writer, sheet_name='Детальный', index= False)
+
         except pd.errors.EmptyDataError:
             pass
         except NameError:
