@@ -267,7 +267,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         code_page = self.get_codepage(file_set[0])
 
         # имя файла для выгрузки
-        xlsx_file = self.name_report_xlsx + self.get_currect_datetime() + '.xlsx'
+        xlsx_file = self.name_report_xlsx + self.get_current_datetime() + '.xlsx'
 
         try:
             # прочитать весь файл
@@ -319,7 +319,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
     # преобразование текущей даты в строку
     @staticmethod
-    def get_currect_datetime():
+    def get_current_datetime():
         curr_dt = datetime.datetime.now()
         curr_dt_str = curr_dt.strftime('%m_%d_%Y_%H_%M_%S')
         return curr_dt_str
