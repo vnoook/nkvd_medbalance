@@ -49,6 +49,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.info_for_open_file = 'Выберите файл (.ZIP) или (.CSV)'
         self.text_empty_path_file = 'файл пока не выбран'
         self.selected_file = None
+        self.unpacked_file = None
         self.headers = ['prod_name', 'full_prod_name', 'status', 'sgtin']
         self.name_report_xlsx = 'НОККВД_остатки_'
 
@@ -201,6 +202,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                                 fp.seek(0)
                                 # пока файл не закрыт получаю его имя
                                 file_set = self.parse_file_parts(fp.name)
+                                self.unpacked_file = file_set[0]
                                 # и передаю его в обработку данных (первое это табличная часть, второе в эксель)
                                 self.take_csv(file_set)
 
@@ -257,8 +259,21 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
     # функция создания отчёта xls
     # данные обработать и вставить их в эксель на два листа
     def report_to_xls(self):
-        # определение расширения файла и выбор действий
-        file_set = self.parse_file_parts(self.selected_file)
+        print('-' * 55)
+        print(self.selected_file)
+        print(self.unpacked_file)
+        if self.unpacked_file:
+            print(1)
+            file_set = self.parse_file_parts(self.unpacked_file)
+        else:
+            print(2)
+            file_set = self.parse_file_parts(self.selected_file)
+        print(file_set)
+        print('-'*55)
+        # exit()
+
+        # # определение расширения файла и выбор действий
+        # file_set = self.parse_file_parts(self.unpacked_file)
 
         # определение кодировки входных данных
         code_page = self.get_codepage(file_set[0])
