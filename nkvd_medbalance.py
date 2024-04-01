@@ -271,6 +271,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         try:
             # прочитать весь файл
+            print(file_set[0])
             df_all = pd.read_csv(file_set[0], encoding=code_page, dtype=object)
 
             headers = self.headers
