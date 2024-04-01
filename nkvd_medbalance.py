@@ -259,21 +259,10 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
     # функция создания отчёта xls
     # данные обработать и вставить их в эксель на два листа
     def report_to_xls(self):
-        print('-' * 55)
-        print(self.selected_file)
-        print(self.unpacked_file)
         if self.unpacked_file:
-            print(1)
             file_set = self.parse_file_parts(self.unpacked_file)
         else:
-            print(2)
             file_set = self.parse_file_parts(self.selected_file)
-        print(file_set)
-        print('-'*55)
-        # exit()
-
-        # # определение расширения файла и выбор действий
-        # file_set = self.parse_file_parts(self.unpacked_file)
 
         # определение кодировки входных данных
         code_page = self.get_codepage(file_set[0])
@@ -283,11 +272,10 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         try:
             # прочитать весь файл
-            print(file_set[0])
             df_all = pd.read_csv(file_set[0], encoding=code_page, dtype=object)
 
-            headers = self.headers
             # выбрать нужные колонки
+            headers = self.headers
             df = df_all[headers]
 
             # создание подборок для выгрузки каждого отдельного листа
