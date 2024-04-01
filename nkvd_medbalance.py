@@ -22,7 +22,7 @@ import difflib
 import chardet
 import tempfile
 import pandas as pd
-import openpyxl
+# import openpyxl
 # import openpyxl.utils
 # import openpyxl.styles
 # import locale
@@ -254,7 +254,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка', f'Файл пуст. Переформируйте файл.')
 
         # TODO
-        # тут дальше дожна быть обработка и выгрузка в табличную часть,
+        # тут дальше должна быть обработка и выгрузка в табличную часть,
         # но её я пока не написал
 
     # функция создания отчёта xls
