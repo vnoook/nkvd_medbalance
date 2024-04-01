@@ -155,9 +155,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
     # активация объектов на форме зависящих от выбора файла
     def activate_objects(self):
-        # TODO
-        # это переписать
-
         # активация объектов на форме зависящих от выбора файла
         if self.text_empty_path_file not in self.label_path_selected_file.text():
             self.button_report_to_xls.setEnabled(True)
@@ -247,15 +244,15 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 # передача данных в подготовку для табличной части
                 self.create_csv_list(gathering_list)
 
+                # TODO
+                # тут дальше должна быть обработка и выгрузка в табличную часть,
+                # но её я пока не написал
+
                 # активация объектов на форме зависящих от выбора файла
                 self.activate_objects()
             else:
                 # информационное окно о пустом файле csv
                 PyQt5.QtWidgets.QMessageBox.information(self, 'Ошибка', f'Файл пуст. Переформируйте файл.')
-
-        # TODO
-        # тут дальше должна быть обработка и выгрузка в табличную часть,
-        # но её я пока не написал
 
     # функция создания отчёта xls
     # данные обработать и вставить их в эксель на два листа
@@ -313,9 +310,6 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
                 str_list.append(list_of_input_list[place_dict[place]])
             output_list.append(str_list)
 
-        # TODO
-        # тут вызвать выгрузку в табличную часть или это сделать в take_csv (252 строка)
-        # print(*output_list, sep='\n')
         return output_list
 
     # преобразование текущей даты в строку
