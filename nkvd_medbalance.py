@@ -40,7 +40,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Помощник проверки остатков')
-        self.setGeometry(150, 150, 500, 300)
+        self.setGeometry(150, 150, 500, 210)
         # self.setWindowFlags(PyQt5.QtCore.Qt.WindowStaysOnTopHint)
 
         # переменные
@@ -79,7 +79,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.label_path_selected_file.setObjectName('label_path_selected_file')
         self.label_path_selected_file.setEnabled(False)
         self.label_path_selected_file.setText(self.text_empty_path_file)
-        self.label_path_selected_file.setGeometry(PyQt5.QtCore.QRect(10, 70, 400, 40))
+        self.label_path_selected_file.setGeometry(PyQt5.QtCore.QRect(10, 80, 400, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(10)
         self.label_path_selected_file.setFont(font)
@@ -95,7 +95,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.button_report_to_xls.setObjectName('button_report_to_xls')
         self.button_report_to_xls.setEnabled(False)
         self.button_report_to_xls.setText('Создать отчёт "Остатки на складе"')
-        self.button_report_to_xls.setGeometry(PyQt5.QtCore.QRect(10, 100, 260, 25))
+        self.button_report_to_xls.setGeometry(PyQt5.QtCore.QRect(10, 110, 260, 25))
         self.button_report_to_xls.clicked.connect(self.report_to_xls)
         self.button_report_to_xls.setToolTip(self.button_report_to_xls.objectName())
 
@@ -103,7 +103,7 @@ class WindowMain(PyQt5.QtWidgets.QMainWindow):
         self.button_exit = PyQt5.QtWidgets.QPushButton(self)
         self.button_exit.setObjectName('button_exit')
         self.button_exit.setText('Выход')
-        self.button_exit.setGeometry(PyQt5.QtCore.QRect(10, 140, 100, 25))
+        self.button_exit.setGeometry(PyQt5.QtCore.QRect(10, 160, 100, 25))
         # self.button_exit.setFixedWidth(50)
         self.button_exit.clicked.connect(self.click_on_btn_exit)
         self.button_exit.setToolTip(self.button_exit.objectName())
